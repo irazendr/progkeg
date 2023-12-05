@@ -9,7 +9,7 @@ class KegiatanModel extends Model
     protected $table            = 'daftar_kegiatan';
     protected $primaryKey       = 'id_kegiatan';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['nama_kegiatan', 'slug_kegiatan', 'tgl_mulai', 'tgl_selesai'];
+    protected $allowedFields    = ['nama_kegiatan', 'slug_kegiatan', 'tgl_mulai', 'tgl_selesai', 'user'];
 
     // Dates
     protected $useTimestamps = true;

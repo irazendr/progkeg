@@ -19,7 +19,7 @@
                             <div class="form-floating mb-3">
                                 <input
                                     class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>"
-                                    id="inputEmail" type="email" placeholder="<?= lang('Auth.email') ?>" />
+                                    id="inputEmail" name="login" type="email" placeholder="<?= lang('Auth.email') ?>" />
                                 <label for="inputEmail"><?= lang('Auth.email') ?></label>
                                 <div class="invalid-feedback">
                                     <?= session('errors.login') ?>
@@ -29,7 +29,7 @@
                             <div class="form-floating mb-3">
                                 <input
                                     class="form-control <?php if (session('errors.login')) : ?>is-invalid<?php endif ?>"
-                                    id="inputEmail" type="text" placeholder="<?= lang('Auth.emailOrUsername') ?>" />
+                                    id="inputEmail" name="login" type="text" placeholder="<?= lang('Auth.emailOrUsername') ?>" />
                                 <label for="inputEmail"><?= lang('Auth.emailOrUsername') ?></label>
                                 <div class="invalid-feedback">
                                     <?= session('errors.login') ?>
@@ -41,7 +41,7 @@
                             <div class="form-floating mb-3">
                                 <input
                                     class="form-control <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>"
-                                    id="inputPassword" name="password" placeholder="<?= lang('Auth.password') ?>" />
+                                    type="password" id="inputPassword" name="password" placeholder="<?= lang('Auth.password') ?>" />
                                 <label for="inputPassword"><?= lang('Auth.password') ?></label>
                                 <div class="invalid-feedback">
                                     <?= session('errors.password') ?>

@@ -14,7 +14,12 @@
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="<?= base_url('daftar-kegiatan'); ?>">Daftar Kegiatan</a>
-                        <!-- <a class="nav-link" href="layout-sidenav-light.html">Kategori Kegiatan</a> -->
+                    </nav>
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="<?= base_url('input-target'); ?>">Input Target Realisasi</a>
+                    </nav>
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="<?= base_url('input-progress'); ?>">Input Progress</a>
                     </nav>
                 </div>
                 <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
@@ -60,19 +65,21 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                     Charts
                 </a> -->
-                <a class="nav-link" href="/">
-                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                    Akun
-                </a>
-                <a class="nav-link" href="/">
+                <?php if (in_groups('Admin')) : ?>
+                    <a class="nav-link" href="<?= base_url('akun') ?>">
+                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                        Akun
+                    </a>
+                <?php endif; ?>
+                <a class="nav-link" href="<?= base_url('logout') ?>">
                     <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
                     Logout
                 </a>
             </div>
         </div>
-        <div class="sb-sidenav-footer">
-            <div class="small">Logged in as:</div>
-            Start Bootstrap
-        </div>
+        <!-- <div class="sb-sidenav-footer">
+            <div class="small">Masuk Sebagai:</div>
+            
+        </div> -->
     </nav>
 </div>

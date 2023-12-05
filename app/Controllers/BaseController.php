@@ -3,14 +3,14 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
+use Psr\Log\LoggerInterface;
+use App\Models\KegiatanModel;
 use CodeIgniter\HTTP\CLIRequest;
+
+// use model
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
-
-// use model
-use App\Models\KegiatanModel;
 
 /**
  * Class BaseController
@@ -39,7 +39,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['auth'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
