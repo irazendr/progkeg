@@ -31,124 +31,83 @@
                                         <i class="fas fa-upload"></i> Import Data
                                     </button>
                                 </div>
-                                
+
                             </div>
 
 
-                        <?php if (session('success')) : ?>
-                            <div class="swal" data-type="success" data-swal="<?= session('success'); ?>"></div>
-                        <?php endif; ?>
+                            <?php if (session('success')) : ?>
+                                <div class="swal" data-type="success" data-swal="<?= session('success'); ?>"></div>
+                            <?php endif; ?>
 
-                        <?php if (session('error')) : ?>
-                            <div class="swal" data-type="error" data-swal="<?= session('error'); ?>"></div>
-                        <?php endif; ?>
-                        <table class="table table-striped table-hover" id="datatablesSimple">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama Kegiatan</th>
-                                    <th>Realisasi</th>
-                                    <th>Tanggal Input</th>
-                                    <th>User</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $no = 1; ?>
-                                <?php foreach ($daftar_kegiatan as $k) : ?>
+                            <?php if (session('error')) : ?>
+                                <div class="swal" data-type="error" data-swal="<?= session('error'); ?>"></div>
+                            <?php endif; ?>
+                            <table class="table table-striped table-hover" id="datatablesSimple">
+                                <thead>
                                     <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td>
-                                            <?= $k->nama_kegiatan; ?>
-                                        </td>
-                                        <td>
-                                            <?= $k->realisasi; ?>
-                                        </td>
-                                        <td>
-                                            <?= date('d/m/Y', strtotime($k->tgl_masuk)); ?>
-                                        </td>
-                                        <td>
-                                            <?= $k->user_k; ?>
-                                        </td>
-                                        <td width="15%" class="text-center">
-                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#ubahModal<?= $k->prog_id; ?>"><i class="fas fa-edit"></i>
-                                                Update</button>
-                                            <?php if (in_groups('Admin')) : ?>
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="hapus(<?= $k->prog_id; ?>)"><i class="fas fa-trash-alt"></i>
-                                                    Hapus</button>
-                                            <?php endif; ?>
-                                        </td>
+                                        <th>No</th>
+                                        <th>Nama Kegiatan</th>
+                                        <th>Realisasi</th>
+                                        <th>Tanggal Input</th>
+                                        <th>User</th>
+                                        <th>Aksi</th>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php $no = 1; ?>
+                                    <?php foreach ($daftar_kegiatan as $k) : ?>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td>
+                                                <?= $k->nama_kegiatan; ?>
+                                            </td>
+                                            <td>
+                                                <?= $k->realisasi; ?>
+                                            </td>
+                                            <td>
+                                                <?= date('d/m/Y', strtotime($k->tgl_masuk)); ?>
+                                            </td>
+                                            <td>
+                                                <?= $k->user_k; ?>
+                                            </td>
+                                            <td width="15%" class="text-center">
+                                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#ubahModal<?= $k->prog_id; ?>"><i class="fas fa-edit"></i>
+                                                    Update</button>
+                                                <?php if (in_groups('Admin')) : ?>
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="hapus(<?= $k->prog_id; ?>)"><i class="fas fa-trash-alt"></i>
+                                                        Hapus</button>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-</div>
-</main>
-<!-- Modal Tambah-->
-<div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus"></i>Input Progress Kegiatan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('input-progress/tambah'); ?>" method="post">
-                    <?= csrf_field(); ?>
-                    <div class="mb-3">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <select class="form-select" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan">
-                                <option value="" disabled selected>
-                                    --Pilih Kegiatan--</option>
-                                <?php foreach ($list_keg as $l) : ?>
-                                    <option value="<?= $l->id_kegiatan; ?>">
-                                        <?= $l->nama_kegiatan; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <label for="">Nama Kegiatan</label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input type="number" name="realisasi" id="realisasi" class="form-control" required>
-                            <label for="realisasi">Realisasi</label>
-                        </div>
-                    </div>
-                    <input type="hidden" id="user" name="user" value="<?= user()->username; ?>">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Tambah</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<?php foreach ($daftar_kegiatan as $l) : ?>
-    <!-- Modal Update -->
-    <div class="modal fade" id="ubahModal<?= $l->prog_id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    </main>
+    <!-- Modal Tambah-->
+    <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Update Progress
-                        Kegiatan</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus"></i>Input Progress Kegiatan
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="<?= base_url('input-progress/ubah/' . $l->prog_id); ?>" method="post">
+                    <form action="<?= base_url('input-progress/tambah'); ?>" method="post">
                         <?= csrf_field(); ?>
-                        <input type="hidden" name="_method" value="PUT">
                         <div class="mb-3">
                             <div class="form-floating mb-3 mb-md-0">
-                                <select class="form-select" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan" disabled>
-                                    <?php foreach ($list_keg as $m) : ?>
-                                        <option value="<?= $m->id_kegiatan; ?>" <?php if ($m->id_kegiatan == $l->id_keg) : ?>selected<?php endif ?>><?= $m->nama_kegiatan; ?></option>
+                                <select class="form-select" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan">
+                                    <option value="" disabled selected>
+                                        --Pilih Kegiatan--</option>
+                                    <?php foreach ($list_keg as $l) : ?>
+                                        <option value="<?= $l->id_k; ?>">
+                                            <?= $l->nama_kegiatan; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <label for="">Nama Kegiatan</label>
@@ -156,128 +115,162 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-floating mb-3 mb-md-0">
-                                <input type="number" name="realisasi" id="realisasi" class="form-control" value="<?= $l->realisasi; ?>" required>
+                                <input type="number" name="realisasi" id="realisasi" class="form-control" required>
                                 <label for="realisasi">Realisasi</label>
                             </div>
                         </div>
+                        <input type="hidden" name="tgl_input" value="<?= date('Y-m-d'); ?>">
+                        <input type="hidden" name="tgl_update" value="<?= date('Y-m-d'); ?>">
                         <input type="hidden" id="user" name="user" value="<?= user()->username; ?>">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
                 </div>
                 </form>
             </div>
         </div>
     </div>
-<?php endforeach; ?>
 
-<!-- Modal Import-->
-<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-upload"></i> Import Data Progress Kegiatan</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= base_url('input-progress/import'); ?>" method="post">
-                    <?= csrf_field(); ?>
-                    <div class="mb-3">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <select class="form-select" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan">
-                                <option value="" disabled selected>
-                                    --Pilih Kegiatan--</option>
-                                <?php foreach ($list_keg as $l) : ?>
-                                    <option value="<?= $l->id_kegiatan; ?>">
-                                        <?= $l->nama_kegiatan; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <label for="">Nama Kegiatan</label>
-                        </div>
+
+    <?php foreach ($daftar_kegiatan as $l) : ?>
+        <!-- Modal Update -->
+        <div class="modal fade" id="ubahModal<?= $l->prog_id; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Update Progress
+                            Kegiatan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input type="number" name="realisasi" id="realisasi" class="form-control" required>
-                            <label for="realisasi">Realisasi</label>
-                        </div>
+                    <div class="modal-body">
+                        <form action="<?= base_url('input-progress/ubah/' . $l->prog_id); ?>" method="post">
+                            <?= csrf_field(); ?>
+                            <input type="hidden" name="_method" value="PUT">
+                            <div class="mb-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <select class="form-select" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan" disabled>
+                                        <?php foreach ($list_keg as $m) : ?>
+                                            <option value="<?= $m->id_k; ?>" <?php if ($m->id_k == $l->id_keg) : ?>selected<?php endif ?>>
+                                                <?= $m->nama_kegiatan; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <label for="">Nama Kegiatan</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input type="number" name="realisasi" id="realisasi" class="form-control" value="<?= $l->realisasi; ?>" required>
+                                    <label for="realisasi">Realisasi</label>
+                                </div>
+                            </div>
+                            <input type="hidden" name="tgl_update" value="<?= date('Y-m-d'); ?>">
+                            <input type="hidden" id="user" name="user" value="<?= user()->username; ?>">
                     </div>
-                    <input type="hidden" id="user" name="user" value="<?= user()->username; ?>">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                    </form>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Import</button>
+        </div>
+    <?php endforeach; ?>
+
+    <!-- Modal Import-->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-upload"></i> Import Data Progress
+                        Kegiatan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="<?= base_url('input-progress/import'); ?>" method="post" enctype="multipart/form-data">
+                        <?= csrf_field(); ?>
+                        <div class="mb-3">
+                            <label class="mb-1" for="">Unggah File</label>
+
+                            <input type="file" class="form-control" name="file" id="" accept=".xls,.xlsx">
+                            <a href="/template_import_realisasi.xlsx">Template Import Data</a>
+                        </div>
+                        <input type="hidden" id="user" name="user" value="<?= user()->username; ?>">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
-</div>
 
-<?= $this->endSection(); ?>
-<?= $this->Section('script'); ?>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script>
-    $('.swal').each(function() {
-        const type = $(this).data('type');
-        const message = $(this).data('swal');
+    <?= $this->endSection(); ?>
+    <?= $this->Section('script'); ?>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $('.swal').each(function() {
+            const type = $(this).data('type');
+            const message = $(this).data('swal');
 
-        if (type === 'success') {
+            if (type === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else if (type === 'error') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+
+        function hapus(id) {
             Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: message,
-                showConfirmButton: false,
-                timer: 1500
-            });
-        } else if (type === 'error') {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: message,
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-    });
+                title: 'Hapus',
+                text: "Anda Yakin Data Progress Kegiatan Akan Dihapus?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                $.ajax({
+                    type: 'POST',
+                    url: '<?= base_url("input-progress/hapus"); ?>',
+                    data: {
+                        _method: 'delete',
+                        <?= csrf_token() ?>: '<?= csrf_hash() ?>',
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.success,
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location.href = "<?= base_url('input-progress'); ?>"
 
-    function hapus(id) {
-        Swal.fire({
-            title: 'Hapus',
-            text: "Anda Yakin Data Progress Kegiatan Akan Dihapus?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Hapus',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            $.ajax({
-                type: 'POST',
-                url: '<?= base_url("input-progress/hapus"); ?>',
-                data: {
-                    _method: 'delete',
-                    <?= csrf_token() ?>: '<?= csrf_hash() ?>',
-                    id: id
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: response.success,
-                        }).then((result) => {
-                            if (result.value) {
-                                window.location.href = "<?= base_url('input-progress'); ?>"
+                                }
 
-                            }
-
-                        })
+                            })
+                        }
                     }
-                }
-            })
+                })
 
-        })
-    }
-</script>
-<?= $this->endSection(); ?>
+            })
+        }
+    </script>
+    <?= $this->endSection(); ?>
