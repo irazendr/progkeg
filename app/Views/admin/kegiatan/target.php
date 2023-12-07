@@ -26,13 +26,14 @@
                                 <div class="swal" data-type="success" data-swal="<?= session('success'); ?>"></div>
                             <?php endif; ?>
 
-                            <?php if (isset($validation) && $validation->getError('id_kegiatan')) : ?>
-                                <div class="swal" data-type="error" data-swal="<?= $validation->getError('id_kegiatan'); ?>"></div>
+                            <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>
+                                <div class="swal" data-type="error" data-swal="<?= $validation->getError('kode_kegiatan'); ?>"></div>
                             <?php endif; ?>
                             <table class="table table-striped table-hover" id="datatablesSimple">
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>ID Kegiatan</th>
                                         <th>Nama Kegiatan</th>
                                         <th>Target</th>
                                         <th>Tanggal Input</th>
@@ -45,6 +46,9 @@
                                     <?php foreach ($target as $k) : ?>
                                         <tr>
                                             <td><?= $no++; ?></td>
+                                            <td>
+                                                <?= $k->id_keg; ?>
+                                            </td>
                                             <td>
                                                 <?= $k->nama_kegiatan; ?>
                                             </td>
@@ -88,17 +92,17 @@
                         <?= csrf_field(); ?>
                         <div class="mb-3">
                             <div class="form-floating mb-3 mb-md-0">
-                                <select class="form-select <?php if (isset($validation) && $validation->getError('id_kegiatan')) : ?>is-invalid<?php endif ?>" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan">
+                                <select class="form-select <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>is-invalid<?php endif ?>" aria-label="Default select example" id="kode_kegiatan" name="kode_kegiatan">
                                     <option value="" disabled selected>--Pilih Kegiatan--</option>
                                     <?php foreach ($list_keg as $l) : ?>
-                                        <option value="<?= $l->id_kegiatan; ?>"><?= $l->nama_kegiatan; ?></option>
+                                        <option value="<?= $l->kode_kegiatan; ?>"><?= $l->nama_kegiatan; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <label for="target">Nama Kegiatan</label>
                                 <div class="invalid-feedback">
-                                <?php if (isset($validation) && $validation->getError('id_kegiatan')) : ?>
-                                            <?= $validation->getError('id_kegiatan'); ?>
-                                        <?php endif; ?>
+                                    <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>
+                                        <?= $validation->getError('kode_kegiatan'); ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -136,16 +140,16 @@
                             <input type="hidden" name="_method" value="PUT">
                             <div class="mb-3">
                                 <div class="form-floating mb-3 mb-md-0">
-                                    <select class="form-select <?php if (isset($validation) && $validation->getError('id_kegiatan')) : ?>is-invalid<?php endif ?>" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan" disabled>
+                                    <select class="form-select <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>is-invalid<?php endif ?>" aria-label="Default select example" id="kode_kegiatan" name="kode_kegiatan" disabled>
                                         <?php foreach ($list_keg as $m) : ?>
-                                            <option value="<?= $m->id_kegiatan; ?>" <?php if ($m->id_kegiatan == $l->id_keg) : ?>selected<?php endif ?>>
+                                            <option value="<?= $m->kode_kegiatan; ?>" <?php if ($m->kode_kegiatan == $l->id_keg) : ?>selected<?php endif ?>>
                                                 <?= $m->nama_kegiatan; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                     <label for="">Nama Kegiatan</label>
                                     <div class="invalid-feedback">
-                                        <?php if (isset($validation) && $validation->getError('id_kegiatan')) : ?>
-                                            <?= $validation->getError('id_kegiatan'); ?>
+                                        <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>
+                                            <?= $validation->getError('kode_kegiatan'); ?>
                                         <?php endif; ?>
                                     </div>
                                 </div>

@@ -15,7 +15,7 @@ class ProgressTarget extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'id_kegiatan' => [
+            'kode_kegiatan' => [
                 'type' => 'INT',
                 'constraint' => 5,
                 'unsigned' => true,
@@ -35,9 +35,9 @@ class ProgressTarget extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        
+
         // Correct foreign key references based on the provided `daftar_kegiatan` migration
-        $this->forge->addForeignKey('id_kegiatan', 'daftar_kegiatan', 'id_kegiatan', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('kode_kegiatan', 'daftar_kegiatan', 'kode_kegiatan', 'CASCADE', 'CASCADE');
 
         try {
             // Attempt to create the table
@@ -46,7 +46,6 @@ class ProgressTarget extends Migration
             // Print any additional information about the exception
             die($e->getMessage());
         }
-
     }
 
     public function down()

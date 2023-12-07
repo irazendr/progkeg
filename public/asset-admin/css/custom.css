@@ -2,3 +2,68 @@
     width: 10%;
     height: 10%;
 }
+
+.show{
+    color: black; /* Change the text color when hovering */
+    background-color: white; 
+    border-radius: 20px 20px;
+    
+}
+.nav-link{
+    text-decoration: none;
+    color: white;
+    /* font-weight: bold; */
+    
+}
+.nav-link:hover {
+    color: black; /* Change the text color when hovering */
+    background-color: white; 
+    border-radius: 20px 0 0 20px;
+    
+}
+.dropdown-toggle:hover {
+    color: black; /* Change the text color when hovering */
+    background-color: white; 
+    border-radius: 20px 20px;
+    
+}
+.nav-link:focus{
+    color: black; /* Change the text color when hovering */
+    background-color: white; 
+    border-radius: 20px 0 0 20px;
+    
+}
+ /* Style for the navbar */
+ nav {
+    background-color: #2c6975; /* Set the background color of the navbar */
+    padding:0 0 15px 15px;
+    /* border-radius: 0 10px 0 10px; Add rounded corners to the navbar */
+}
+
+/* Style for the navbar links */
+nav a {
+    
+    color: white; /* Set the default text color */
+    text-decoration: none; /* Remove underline from links */
+    margin: 0 0; /* Add some space between links */
+    transition: color 0.3s ease; /* Add a smooth transition for the color change */
+}
+/* Style for the navbar links */
+.navbar-brand {
+    font-weight: bold;
+    color: white; /* Set the default text color */
+    text-decoration: none; /* Remove underline from links */
+    margin: 0 0; /* Add some space between links */
+    transition: color 0.3s ease; /* Add a smooth transition for the color change */
+}
+.navbar-brand:hover {
+    
+    color: white; /* Change the text color when hovering */
+}
+.btn-link{
+    color: white;
+}
+.btn-link:hover{
+    color: #e0ecde;
+}
+

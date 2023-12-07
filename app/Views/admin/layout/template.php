@@ -16,7 +16,7 @@
 </head>
 
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="<?= base_url('dashboard') ?>"><img id="proKegiatan" src="<?= base_url('asset-admin'); ?>/img/proKegiatan.png" alt="Icon">
             Progress Kegiatan</a>

@@ -24,21 +24,21 @@ class KegiatanController extends BaseController
 
         $this->db = \config\Database::connect();
         $this->builder = $this->db->table('progress_kegiatan');
-        $this->builder->select('progress_kegiatan.id as prog_id, progress_kegiatan.id_kegiatan as id_keg, nama_kegiatan, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k, auth_permissions.name as permissions');
-        $this->builder->join('daftar_kegiatan', 'daftar_kegiatan.id_kegiatan =  progress_kegiatan.id_kegiatan');
-        $this->builder->join('progress_target', 'progress_target.id_kegiatan =  daftar_kegiatan.id_kegiatan');
+        $this->builder->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, nama_kegiatan, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k, auth_permissions.name as permissions');
+        $this->builder->join('daftar_kegiatan', 'daftar_kegiatan.kode_kegiatan =  progress_kegiatan.kode_kegiatan');
+        $this->builder->join('progress_target', 'progress_target.kode_kegiatan =  daftar_kegiatan.kode_kegiatan');
         $this->builder->join('users', 'users.username =  progress_target.user');
         $this->builder->join('auth_users_permissions', 'auth_users_permissions.user_id =  users.id');
         $this->builder->join('auth_permissions', 'auth_permissions.id= auth_users_permissions.permission_id');
         $this->query = $this->builder->get();
 
         $this->builder2 = $this->db->table('daftar_kegiatan');
-        $this->builder2->select('daftar_kegiatan.id_kegiatan as id_k, progress_target.id as id_t, progress_target.id_kegiatan as id_keg,nama_kegiatan, progress_target.target, progress_target.tgl_input as tgl_masuk, progress_target.user as user_t');
-        $this->builder2->join('progress_target', 'progress_target.id_kegiatan = daftar_kegiatan.id_kegiatan');
+        $this->builder2->select('daftar_kegiatan.kode_kegiatan as id_k, progress_target.id as id_t, progress_target.kode_kegiatan as id_keg,nama_kegiatan, progress_target.target, progress_target.tgl_input as tgl_masuk, progress_target.user as user_t');
+        $this->builder2->join('progress_target', 'progress_target.kode_kegiatan = daftar_kegiatan.kode_kegiatan');
         $this->query2 = $this->builder2->get();
 
         $this->builder3 = $this->db->table('daftar_kegiatan');
-        $this->builder3->select('id_kegiatan, nama_kegiatan');
+        $this->builder3->select('kode_kegiatan, nama_kegiatan');
         $this->query3 = $this->builder3->get();
 
         // Mendapatkan user ID dari sesi
@@ -49,7 +49,7 @@ class KegiatanController extends BaseController
         $userInfo = $this->userModel->find($userID);
 
         $this->builder4 = $this->db->table('daftar_kegiatan');
-        $this->builder4->select('daftar_kegiatan.id_kegiatan as id_keg, nama_kegiatan, tgl_mulai, tgl_selesai, daftar_kegiatan.tgl_ubah, daftar_kegiatan.tgl_input AS tgl_masuk, daftar_kegiatan.user AS user_k, auth_users_permissions.user_id AS permissions, users.id AS users');
+        $this->builder4->select('daftar_kegiatan.kode_kegiatan as id_keg, nama_kegiatan, tgl_mulai, tgl_selesai, daftar_kegiatan.tgl_ubah, daftar_kegiatan.tgl_input AS tgl_masuk, daftar_kegiatan.user AS user_k, auth_users_permissions.user_id AS permissions, users.id AS users');
         $this->builder4->join('users', 'users.username = daftar_kegiatan.user');
         $this->builder4->join('auth_users_permissions', 'auth_users_permissions.user_id = users.id');
         $this->builder4->join('auth_permissions', 'auth_permissions.id = auth_users_permissions.permission_id');
@@ -89,7 +89,7 @@ class KegiatanController extends BaseController
         $this->KegiatanModel->insert($data);
         return redirect()->back()->with('success', 'Data Kegiatan Berhasil Ditambahkan.');
     }
-    public function update($id_kegiatan)
+    public function update($kode_kegiatan)
     {
         $nama_kegiatan = $this->request->getPost('nama_kegiatan');
         $tgl_mulai = $this->request->getPost('tgl_mulai');
@@ -108,14 +108,14 @@ class KegiatanController extends BaseController
             'user' => $user,
 
         ];
-        $this->KegiatanModel->update($id_kegiatan, $data);
+        $this->KegiatanModel->update($kode_kegiatan, $data);
         return redirect()->back()->with('success', 'Data Kegiatan Berhasil Diubah.');
     }
     public function destroy()
     {
         if ($this->request->isAJAX()) {
-            $id_kegiatan = $this->request->getVar('id_kegiatan');
-            $this->KegiatanModel->delete($id_kegiatan);
+            $kode_kegiatan = $this->request->getVar('kode_kegiatan');
+            $this->KegiatanModel->delete($kode_kegiatan);
             $result = [
                 'success' => 'Data Kegiatan Berhasil Dihapus.'
             ];
@@ -139,14 +139,14 @@ class KegiatanController extends BaseController
 
     public function progress()
     {
-        $id_kegiatan = $this->request->getPost('id_kegiatan');
+        $kode_kegiatan = $this->request->getPost('kode_kegiatan');
         $target = $this->request->getPost('target');
         $realisasi = $this->request->getPost('realisasi');
         $user = $this->request->getPost('user');
 
 
         $data = [
-            'id_kegiatan' => $id_kegiatan,
+            'kode_kegiatan' => $kode_kegiatan,
             'target' => $target,
             'realisasi' => $realisasi,
             'user' => $user,
@@ -220,7 +220,7 @@ class KegiatanController extends BaseController
 
         // Validation passed, proceed with adding the target
         $data = [
-            'id_kegiatan' => $this->request->getPost('id_kegiatan'),
+            'kode_kegiatan' => $this->request->getPost('kode_kegiatan'),
             'target' => $this->request->getPost('target'),
             'user' => $this->request->getPost('user'),
 

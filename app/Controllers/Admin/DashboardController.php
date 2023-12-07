@@ -14,18 +14,18 @@ class DashboardController extends BaseController
         $this->progressModel = new ProgressModel();
         $this->db = \config\Database::connect();
         $this->builder = $this->db->table('progress_kegiatan');
-        $this->builder->select('progress_kegiatan.id as prog_id, progress_kegiatan.id_kegiatan as id_keg, nama_kegiatan, target, realisasi, progress_target.tgl_update as target_update, progress_kegiatan.tgl_update as progress_update');
-        $this->builder->join('daftar_kegiatan', 'daftar_kegiatan.id_kegiatan =  progress_kegiatan.id_kegiatan');
-        $this->builder->join('progress_target', 'progress_target.id_kegiatan =  daftar_kegiatan.id_kegiatan');
+        $this->builder->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, nama_kegiatan, target, realisasi, progress_target.tgl_update as target_update, progress_kegiatan.tgl_update as progress_update');
+        $this->builder->join('daftar_kegiatan', 'daftar_kegiatan.kode_kegiatan =  progress_kegiatan.kode_kegiatan');
+        $this->builder->join('progress_target', 'progress_target.kode_kegiatan =  daftar_kegiatan.kode_kegiatan');
         $this->query = $this->builder->get();
 
         $this->builder2 = $this->db->table('daftar_kegiatan');
-        $this->builder2->select('id_kegiatan, nama_kegiatan');
+        $this->builder2->select('kode_kegiatan, nama_kegiatan');
         $this->query2 = $this->builder2->get();
 
         $this->builder3 = $this->db->table('progress_target');
-        $this->builder3->select('progress_target.id_kegiatan as id_keg, nama_kegiatan');
-        $this->builder3->join('daftar_kegiatan', 'daftar_kegiatan.id_kegiatan =  progress_target.id_kegiatan');
+        $this->builder3->select('progress_target.kode_kegiatan as id_keg, nama_kegiatan');
+        $this->builder3->join('daftar_kegiatan', 'daftar_kegiatan.kode_kegiatan =  progress_target.kode_kegiatan');
         $this->query3 = $this->builder3->get();
     }
     public function index()

@@ -9,7 +9,7 @@ class DaftarKegiatan extends Migration
     public function up()
     {
         $this->forge->addField([
-            'id_kegiatan' => [
+            'kode_kegiatan' => [
                 'type'           => 'INT',
                 'constraint'     => 5,
                 'unsigned'       => true,
@@ -40,7 +40,7 @@ class DaftarKegiatan extends Migration
                 'null' => true,
             ],
         ]);
-        $this->forge->addKey('id_kegiatan', true);
+        $this->forge->addKey('kode_kegiatan', true);
         $this->forge->createTable('daftar_kegiatan');
     }
 

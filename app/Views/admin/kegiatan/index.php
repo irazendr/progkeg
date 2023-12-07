@@ -34,6 +34,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>ID Kegiatan</th>
                                         <th>Nama Kegiatan</th>
                                         <th>Tanggal Mulai</th>
                                         <th>Tanggal Selesai</th>
@@ -47,6 +48,9 @@
                                     <?php foreach ($daftar_kegiatan as $k) : ?>
                                         <tr>
                                             <td><?= $no++; ?></td>
+                                            <td>
+                                                <?= $k->id_keg; ?>
+                                            </td>
                                             <td>
                                                 <?= $k->nama_kegiatan; ?>
                                             </td>
@@ -66,7 +70,7 @@
                                                 <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#ubahModal<?= $k->id_keg; ?>"><i class="fas fa-edit"></i>
                                                     Ubah</button>
                                                 <?php if (in_groups('Admin')) : ?>
-                                                    <button type="button" class="btn btn-danger btn-sm" onclick="hapus(<?= $k->id_keg; ?>)"><i class="fas fa-trash-alt"></i>
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="hapus('<?= $k->id_keg; ?>')"><i class="fas fa-trash-alt"></i>
                                                         Hapus</button>
                                                 <?php endif; ?>
                                             </td>
@@ -92,6 +96,10 @@
                 <div class="modal-body">
                     <form action="<?= base_url('daftar-kegiatan/tambah'); ?>" method="post">
                         <?= csrf_field(); ?>
+                        <div class="mb-3">
+                            <label for="kode_kegiatan">Kode Kegiatan</label>
+                            <input type="text" name="kode_kegiatan" id="kode_kegiatan" class="form-control" required>
+                        </div>
                         <div class="mb-3">
                             <label for="nama_kegiatan">Nama Kegiatan</label>
                             <input type="text" name="nama_kegiatan" id="nama_kegiatan" class="form-control" required>
@@ -129,6 +137,10 @@
                         <form action="<?= base_url('daftar-kegiatan/ubah/' . $l->id_keg); ?>" method="post">
                             <?= csrf_field(); ?>
                             <input type="hidden" name="_method" value="PUT">
+                            <div class="mb-3">
+                                <label for="kode_kegiatan">Kode Kegiatan</label>
+                                <input type="text" name="kode_kegiatan" id="kode_kegiatan" class="form-control" value="<?= $l->id_keg; ?>" disabled>
+                            </div>
                             <div class="mb-3">
                                 <label for="nama_kegiatan">Nama Kegiatan</label>
                                 <input type="text" name="nama_kegiatan" id="nama_kegiatan" class="form-control" value="<?= $l->nama_kegiatan; ?>" required>
@@ -181,7 +193,7 @@
             }
         });
 
-        function hapus(id_kegiatan) {
+        function hapus(kode_kegiatan) {
             Swal.fire({
                 title: 'Hapus',
                 text: "Anda Yakin Data Kegiatan Akan Dihapus?",
@@ -192,33 +204,37 @@
                 confirmButtonText: 'Hapus',
                 cancelButtonText: 'Batal'
             }).then((result) => {
-                $.ajax({
-                    type: 'POST',
-                    url: '<?= base_url("daftar-kegiatan/hapus"); ?>',
-                    data: {
-                        _method: 'delete',
-                        <?= csrf_token() ?>: '<?= csrf_hash() ?>',
-                        id_kegiatan: id_kegiatan
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.success,
-                            }).then((result) => {
-                                if (result.value) {
-                                    window.location.href = "<?= base_url('daftar-kegiatan'); ?>"
-
-                                }
-
-                            })
+                if (result.isConfirmed) {
+                    // User clicked "Hapus" button
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?= base_url("daftar-kegiatan/hapus"); ?>',
+                        data: {
+                            _method: 'delete',
+                            <?= csrf_token() ?>: '<?= csrf_hash() ?>',
+                            kode_kegiatan: kode_kegiatan
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.success,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "<?= base_url('daftar-kegiatan'); ?>"
+                                    }
+                                })
+                            }
                         }
-                    }
-                })
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // User clicked "Batal" button
+                    Swal.fire('Batal', 'Tidak ada data yang dihapus', 'info');
+                }
+            });
 
-            })
         }
     </script>
     <?= $this->endSection(); ?>

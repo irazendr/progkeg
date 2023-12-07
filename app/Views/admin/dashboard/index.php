@@ -93,9 +93,9 @@
             var selectedActivity;
             var myLineChart;
             var myBarChart;
-            
+
             // Chart.plugins.register(ChartDataLabels);
-            
+
             // Function to update chart with selected activity
             function updateChart() {
                 selectedActivity = $('#activityFilter').val();
@@ -127,37 +127,37 @@
                 // Redraw the chart with the selected activity
                 updateChart();
             });
-    
+
             function chartBarProgress(aggregatedProgressData) {
 
                 var maxValue = Math.max.apply(Math, aggregatedProgressData.map(function(item) {
                     return item.target;
                 }));
-    
+
                 var labels = getLabelsForLastWeek();
 
                 // Prepare data for Chart.js
                 var totalRealisasiData = new Array(labels.length).fill(0);
                 for (var i = 0; i < labels.length; i++) {
                     var currentDate = labels[i];
-    
+
                     // Find entries in aggregatedProgressData for the current date
                     var entriesForDate = aggregatedProgressData.filter(function(item) {
                         return formatDate(item.tgl_input) === currentDate;
                     });
-    
+
                     // Sum the total_realisasi values for the current date
                     var totalForDate = entriesForDate.reduce(function(sum, entry) {
                         return sum + parseInt(entry.total_realisasi, 10);
                     }, 0);
-    
+
                     // If it's not the first day, set the value to the sum from the previous day
                     if (i > 0) {
                         totalForDate += totalRealisasiData[i - 1];
                     }
                     // Update the totalRealisasiData
                     totalRealisasiData[i] = totalForDate;
-    
+
                 }
                 // Function to format tgl_input to 'MMM DD'
                 function formatDate(inputDate) {
@@ -172,8 +172,8 @@
                     datasets: [{
                         label: "Total Realisasi",
                         data: totalRealisasiData,
-                        backgroundColor: "rgba(2,117,216,0.7)", // Bar color
-                        borderColor: "rgba(2,117,216,1)",
+                        backgroundColor: "#68B2A0", // Bar color
+                        borderColor: "#68B2A0",
                         borderWidth: 1,
                     }],
                 };
@@ -182,7 +182,7 @@
                     // Destroy the existing chart before creating a new one
                     myBarChart.destroy();
                 }
-    
+
                 var ctx2 = document.getElementById("chartBarProgress");
                 myBarChart = new Chart(ctx2, {
                     type: 'bar',
@@ -231,10 +231,11 @@
                         },
                     }
                 });
-    
+
             }
+
             function chartProgress(aggregatedProgressData) {
-    
+
                 var maxValue = Math.max.apply(Math, aggregatedProgressData.map(function(item) {
                     return item.target;
                 }));
@@ -285,21 +286,22 @@
                         // Use your dynamic data here
                         data: totalForDateTemp,
                         lineTension: 0.3,
-                        backgroundColor: "rgba(2,117,216,0.2)",
-                        borderColor: "rgba(2,117,216,1)",
-                        pointRadius: 10,
-                        pointBackgroundColor: "rgba(2,117,216,1)",
-                        pointBorderColor: "rgba(255,255,255,0.8)",
-                        pointHoverRadius: 15,
-                        pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                        pointHitRadius: 50,
+                        backgroundColor: "#E0ECDE",
+                        borderColor: "#68B2A0",
+                        pointRadius: 7,
+                        pointBackgroundColor: "#68B2A0",
+                        pointBorderColor: "#68B2A0",
+                        pointHoverRadius: 10,
+                        pointHoverBackgroundColor: "#2C6975",
+                        pointHoverBorderColor: "#2C6975",
+                        pointHitRadius: 40,
                         pointBorderWidth: 2,
                         pointStyle: 'circle',
                     }],
                 };
 
                 console.log(myLineChart);
-                if (myLineChart ) {
+                if (myLineChart) {
                     // Destroy the existing chart before creating a new one
                     myLineChart.destroy();
                 }
@@ -316,8 +318,9 @@
                                 anchor: 'end',
                                 align: 'top',
                                 color: '#36A2EB'
-                            
-                        }},
+
+                            }
+                        },
                         scales: {
                             xAxes: [{
                                 time: {
@@ -344,9 +347,9 @@
                         legend: {
                             display: false
                         },
-                //         tooltips: {
-                //     enabled: false, // Disable tooltips
-                // },
+                        //         tooltips: {
+                        //     enabled: false, // Disable tooltips
+                        // },
                         tooltips: {
                             callbacks: {
                                 label: function(tooltipItem, data) {
@@ -358,11 +361,11 @@
                     }
                 });
             }
-    
+
             function getLabelsForLastWeek() {
                 // Get current date
                 var currentDate = new Date();
-    
+
                 // Generate labels for the last 7 days
                 var labels = [];
                 for (var i = 6; i >= 0; i--) {
@@ -373,12 +376,11 @@
                         day: 'numeric'
                     }));
                 }
-    
+
                 return labels;
             }
         });
         // Register the datalabels plugin
         // Chart.register(ChartDataLabels);
-
     </script>
     <?= $this->endSection(); ?>

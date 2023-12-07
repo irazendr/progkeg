@@ -46,6 +46,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>ID Kegiatan</th>
                                         <th>Nama Kegiatan</th>
                                         <th>Realisasi</th>
                                         <th>Tanggal Input</th>
@@ -58,6 +59,9 @@
                                     <?php foreach ($daftar_kegiatan as $k) : ?>
                                         <tr>
                                             <td><?= $no++; ?></td>
+                                            <td>
+                                                <?= $k->id_keg; ?>
+                                            </td>
                                             <td>
                                                 <?= $k->nama_kegiatan; ?>
                                             </td>
@@ -102,7 +106,7 @@
                         <?= csrf_field(); ?>
                         <div class="mb-3">
                             <div class="form-floating mb-3 mb-md-0">
-                                <select class="form-select" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan">
+                                <select class="form-select" aria-label="Default select example" id="kode_kegiatan" name="kode_kegiatan">
                                     <option value="" disabled selected>
                                         --Pilih Kegiatan--</option>
                                     <?php foreach ($list_keg as $l) : ?>
@@ -149,7 +153,7 @@
                             <input type="hidden" name="_method" value="PUT">
                             <div class="mb-3">
                                 <div class="form-floating mb-3 mb-md-0">
-                                    <select class="form-select" aria-label="Default select example" id="id_kegiatan" name="id_kegiatan" disabled>
+                                    <select class="form-select" aria-label="Default select example" id="kode_kegiatan" name="kode_kegiatan" disabled>
                                         <?php foreach ($list_keg as $m) : ?>
                                             <option value="<?= $m->id_k; ?>" <?php if ($m->id_k == $l->id_keg) : ?>selected<?php endif ?>>
                                                 <?= $m->nama_kegiatan; ?></option>

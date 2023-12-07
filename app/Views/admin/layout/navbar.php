@@ -1,5 +1,5 @@
 <div id="layoutSidenav_nav">
-    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <nav class="sb-sidenav accordion sb-sidenav" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <a class="nav-link" href="<?= base_url('dashboard'); ?>">
