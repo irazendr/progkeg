@@ -83,9 +83,9 @@
     <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-modal text-white">
                     <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus"></i> Input Target Realisasi Kegiatan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
                 </div>
                 <div class="modal-body">
                     <form action="<?= base_url('input-target/tambah'); ?>" method="post">
@@ -129,10 +129,10 @@
         <div class="modal fade" id="ubahModal<?= $l->id_t; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
+                    <div class="modal-header bg-modal text-white">
                         <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Update Target Realisasi
                             Kegiatan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
                     </div>
                     <div class="modal-body">
                         <form action="<?= base_url('input-target/ubah/' . $l->id_t); ?>" method="post">

@@ -20,7 +20,7 @@ class AkunController extends BaseController
         $this->akunModel = new AkunModel();
         $this->db = \config\Database::connect();
         $this->builder = $this->db->table('users');
-        $this->builder->select('users.id as userid, username, email, name,created_at, auth_groups.id as list_role, auth_groups_users.group_id as roleid');
+        $this->builder->select('users.id as userid, nama_lengkap, username, email, name,created_at, auth_groups.id as list_role, auth_groups_users.group_id as roleid');
         $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
         $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
         $this->query = $this->builder->get();
@@ -47,10 +47,11 @@ class AkunController extends BaseController
         $groupData = $this->groupAkunModel->find($id);
 
         if (!$userData || !$groupData) {
-            return redirect()->back()->with('error', 'Data not found.');
+            return redirect()->back()->with('error', 'Data Tidak Ditemukan.');
         }
 
         // Updated data
+        $name = $this->request->getPost('nama_lengkap');
         $username = $this->request->getPost('username');
         $email = $this->request->getPost('email');
         $role = $this->request->getPost('group_id');
@@ -58,9 +59,10 @@ class AkunController extends BaseController
         $hashedPassword = Password::hash($password);
         $isMatch = Password::verify($password, $hashedPassword);
         $needsRehash = Password::needsRehash($hashedPassword, PASSWORD_DEFAULT);
-        
+
 
         $data1 = [
+            'nama_lengkap' => $name,
             'username' => $username,
             'email' => $email,
             'password_hash' => $hashedPassword,
@@ -118,7 +120,7 @@ class AkunController extends BaseController
             ];
             echo json_encode($result);
         } else {
-            exit('404 Not Found');
+            return redirect()->back()->with('error', 'Terjadi Kesalahan Pada Sistem!');
         }
     }
     // public function reset()

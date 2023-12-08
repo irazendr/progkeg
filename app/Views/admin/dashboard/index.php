@@ -14,7 +14,7 @@
             </ol>
             <!-- <div class="row">
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
+                    <div class="card bg-modal text-white mb-4">
                         <div class="card-body">Primary Card</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
                             <a class="small text-white stretched-link" href="#">View Details</a>
@@ -79,7 +79,8 @@
                                 <i class="fas fa-chart-bar me-1"></i>
                                 Grafik Progress Kegiatan (Dokumen/Ruta)
                             </div>
-                            <div class="card-body"><canvas id="chartBarProgress" width="100%" height="40"></canvas></div>
+                            <div class="card-body"><canvas id="chartBarProgress" width="100%" height="40"></canvas>
+                            </div>
                         </div>
                     </div>
 
@@ -173,8 +174,7 @@
                         label: "Total Realisasi",
                         data: totalRealisasiData,
                         backgroundColor: "#68B2A0", // Bar color
-                        borderColor: "#68B2A0",
-                        borderWidth: 1,
+                        hoverBackgroundColor: "#2C6975",
                     }],
                 };
                 console.log(myBarChart);
@@ -286,7 +286,7 @@
                         // Use your dynamic data here
                         data: totalForDateTemp,
                         lineTension: 0.3,
-                        backgroundColor: "#E0ECDE",
+                        backgroundColor: ['rgba(224, 236, 222, 0.8)', 'rgba(224, 236, 222, 0)'],
                         borderColor: "#68B2A0",
                         pointRadius: 7,
                         pointBackgroundColor: "#68B2A0",
@@ -295,7 +295,6 @@
                         pointHoverBackgroundColor: "#2C6975",
                         pointHoverBorderColor: "#2C6975",
                         pointHitRadius: 40,
-                        pointBorderWidth: 2,
                         pointStyle: 'circle',
                     }],
                 };
@@ -312,6 +311,9 @@
                     type: 'line',
                     data: chartData,
                     options: {
+                        gradient: {
+                            enabled: true,
+                        },
                         responsive: true,
                         plugins: {
                             datalabels: {

@@ -69,11 +69,33 @@ $routes->group('input-target', function ($routes) {
 // Export to Excel route
 $routes->get('export-excel', 'Admin\KegiatanController::export_excel');
 
-$routes->group('admin', ['filter' => 'role:Admin'], function ($routes) {
-    // Akun routes
-    $routes->group('akun', function ($routes) {
-        $routes->get('/', 'Admin\AkunController::index');
-        $routes->delete('hapus/', 'Admin\AkunController::destroy');
-        $routes->put('ubah/(:any)', 'Admin\AkunController::ubah/$1');
-    });
+// Daftar Kecamatan routes
+$routes->group('kecamatan', ['filter' => 'role:Admin'], function ($routes) {
+    $routes->get('/', 'Admin\KecamatanController::index');
+    $routes->post('tambah', 'Admin\KecamatanController::store');
+    $routes->put('ubah/(:any)', 'Admin\KecamatanController::update/$1');
+    $routes->delete('hapus/', 'Admin\KecamatanController::destroy');
+});
+
+// Daftar Kelurahan routes
+$routes->group('kelurahan', ['filter' => 'role:Admin'], function ($routes) {
+    $routes->get('/', 'Admin\KelurahanController::index');
+    $routes->post('tambah', 'Admin\KelurahanController::store');
+    $routes->put('ubah/(:any)', 'Admin\KelurahanController::update/$1');
+    $routes->delete('hapus/', 'Admin\KelurahanController::destroy');
+});
+
+// Daftar Mitra routes
+$routes->group('mitra', ['filter' => 'role:Admin'], function ($routes) {
+    $routes->get('/', 'Admin\MitraController::index');
+    $routes->post('tambah', 'Admin\MitraController::store');
+    $routes->put('ubah/(:any)', 'Admin\MitraController::update/$1');
+    $routes->delete('hapus/', 'Admin\MitraController::destroy');
+});
+
+// Akun routes
+$routes->group('akun', ['filter' => 'role:Admin'], function ($routes) {
+    $routes->get('/', 'Admin\AkunController::index');
+    $routes->delete('hapus/', 'Admin\AkunController::destroy');
+    $routes->put('ubah/(:any)', 'Admin\AkunController::ubah/$1');
 });

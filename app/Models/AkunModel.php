@@ -12,7 +12,7 @@ class AkunModel extends Model
     protected $returnType     = User::class;
     // protected $useSoftDeletes = true;
     protected $allowedFields  = [
-        'email', 'username',
+        'nama_lengkap', 'email', 'username',
     ];
     protected $validationRules = [
         'email'         => 'required|valid_email|is_unique[users.email]',

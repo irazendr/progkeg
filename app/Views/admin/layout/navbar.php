@@ -2,24 +2,24 @@
     <nav class="sb-sidenav accordion sb-sidenav" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <a class="nav-link" href="<?= base_url('dashboard'); ?>">
+                <a class="nav-link menu-bar" href="<?= base_url('dashboard'); ?>">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                 </a>
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                <a class="nav-link collapsed menu-bar" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                     Kegiatan
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="<?= base_url('daftar-kegiatan'); ?>">Daftar Kegiatan</a>
+                        <a class="nav-link menu-bar" href="<?= base_url('daftar-kegiatan'); ?>">Daftar Kegiatan</a>
                     </nav>
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="<?= base_url('input-target'); ?>">Input Target Realisasi</a>
+                        <a class="nav-link menu-bar" href="<?= base_url('input-target'); ?>">Input Target Realisasi</a>
                     </nav>
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="<?= base_url('input-progress'); ?>">Input Progress</a>
+                        <a class="nav-link menu-bar" href="<?= base_url('input-progress'); ?>">Input Progress</a>
                     </nav>
                 </div>
                 <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
@@ -66,12 +66,24 @@
                     Charts
                 </a> -->
                 <?php if (in_groups('Admin')) : ?>
-                    <a class="nav-link" href="<?= base_url('akun') ?>">
+                    <a class="nav-link menu-bar" href="<?= base_url('kecamatan') ?>">
+                        <div class="sb-nav-link-icon"><i class="fas fa-atlas"></i></div>
+                        Daftar Kecamatan
+                    </a>
+                    <a class="nav-link menu-bar" href="<?= base_url('kelurahan') ?>">
+                        <div class="sb-nav-link-icon"><i class="fas fa-map-marked-alt"></i></div>
+                        Daftar Kelurahan/Desa
+                    </a>
+                    <a class="nav-link menu-bar" href="<?= base_url('mitra') ?>">
+                        <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
+                        Daftar Mitra
+                    </a>
+                    <a class="nav-link menu-bar" href="<?= base_url('akun') ?>">
                         <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                        Akun
+                        Daftar Akun Pengguna
                     </a>
                 <?php endif; ?>
-                <a class="nav-link" href="<?= base_url('logout') ?>">
+                <a class="nav-link menu-bar" href="<?= base_url('logout') ?>">
                     <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
                     Logout
                 </a>

@@ -36,6 +36,7 @@
                                         <th>No</th>
                                         <th>ID Kegiatan</th>
                                         <th>Nama Kegiatan</th>
+                                        <th>Tipe Kegiatan</th>
                                         <th>Tanggal Mulai</th>
                                         <th>Tanggal Selesai</th>
                                         <th>Tanggal Input</th>
@@ -53,6 +54,9 @@
                                             </td>
                                             <td>
                                                 <?= $k->nama_kegiatan; ?>
+                                            </td>
+                                            <td>
+                                                <?= $k->tipe_kegiatan; ?>
                                             </td>
                                             <td>
                                                 <?= date('d/m/Y', strtotime($k->tgl_mulai)); ?>
@@ -88,10 +92,10 @@
     <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-modal text-white">
                     <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-plus"></i> Tambah
                         Kegiatan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
                 </div>
                 <div class="modal-body">
                     <form action="<?= base_url('daftar-kegiatan/tambah'); ?>" method="post">
@@ -103,6 +107,16 @@
                         <div class="mb-3">
                             <label for="nama_kegiatan">Nama Kegiatan</label>
                             <input type="text" name="nama_kegiatan" id="nama_kegiatan" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating mb-3 mb-md-0">
+                                <select class="form-select" aria-label="Default select example" id="tipe_kegiatan" name="tipe_kegiatan">
+                                    <option value="Pemuktahiran">Pemuktahiran</option>
+                                    <option value="Pencacahan">Pencacahan</option>
+                                    <option value="Pengolahan">Pengolahan</option>
+                                </select>
+                                <label for="tipe_kegiatan">Tipe Kegiatan</label>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="tgl_mulai" class="form-label">Pilih Tanggal Mulai:</label>
@@ -128,10 +142,10 @@
         <div class="modal fade" id="ubahModal<?= $l->id_keg; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
+                    <div class="modal-header bg-modal text-white">
                         <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Ubah Data
                             Kegiatan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
                     </div>
                     <div class="modal-body">
                         <form action="<?= base_url('daftar-kegiatan/ubah/' . $l->id_keg); ?>" method="post">
@@ -144,6 +158,17 @@
                             <div class="mb-3">
                                 <label for="nama_kegiatan">Nama Kegiatan</label>
                                 <input type="text" name="nama_kegiatan" id="nama_kegiatan" class="form-control" value="<?= $l->nama_kegiatan; ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <select class="form-select" aria-label="Default select example" id="tipe_kegiatan" name="tipe_kegiatan" disabled>
+                                        <?php foreach ($list_keg as $m) : ?>
+                                            <option value="<?= $l->tipe_kegiatan; ?>" <?php if ($m->id_k == $l->id_keg) : ?>selected<?php endif ?>>
+                                                <?= $l->tipe_kegiatan; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <label for="tipe_kegiatan">Tipe Kegiatan</label>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="tgl_mulai" class="form-label">Pilih Tanggal Mulai:</label>

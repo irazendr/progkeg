@@ -17,11 +17,18 @@
                     Daftar Akun
                 </div>
                 <div class="card-body">
-                    <div class="swal" data-swal="<?= session('success'); ?>"></div>
+                    <?php if (session('success')) : ?>
+                        <div class="swal" data-type="success" data-swal="<?= session('success'); ?>"></div>
+                    <?php endif; ?>
+
+                    <?php if (session('error')) : ?>
+                        <div class="swal" data-type="error" data-swal="<?= session('error'); ?>"></div>
+                    <?php endif; ?>
                     <table class="table table-striped table-hover" id="datatablesSimple">
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Nama Lengkap</th>
                                 <th>Email</th>
                                 <th>Username</th>
                                 <th>Role</th>
@@ -34,6 +41,9 @@
                             <?php foreach ($data_akun as $akun) : ?>
                                 <tr>
                                     <td><?= $no++; ?></td>
+                                    <td>
+                                        <?= $akun->nama_lengkap; ?>
+                                    </td>
                                     <td>
                                         <?= $akun->email; ?>
                                     </td>
@@ -65,17 +75,33 @@
         <div class="modal fade" id="ubahModal<?= $k->userid; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
+                    <div class="modal-header bg-modal text-white">
                         <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Ubah Data
                             Akun</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
                     </div>
                     <div class="modal-body">
                         <form action="<?= base_url('akun/ubah/' . $k->userid); ?>" method="post">
                             <?= csrf_field(); ?>
                             <input type="hidden" name="_method" value="PUT">
-
                             <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3 mb-md-0">
+                                        <input class="form-control" id="nama_lengkap" type="text" name="nama_lengkap" placeholder="Nama Lengkap" value="<?= $k->nama_lengkap; ?>" required />
+                                        <label for="nama_lengkap">Nama Lengkap</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3 mb-md-0">
+                                        <input class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" id="inputEmail" name="email" aria-describedby="emailHelp" placeholder="<?= lang('Auth.email') ?>" value="<?= $k->email; ?>" required />
+                                        <label for="inputEmail"><?= lang('Auth.email') ?></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3 mb-md-0">
                                         <input class="form-control <?php if (session('errors.username')) : ?>is-invalid<?php endif ?>" id="inputUsername" type="text" name="username" placeholder="<?= lang('Auth.username') ?>" value="<?= $k->username; ?>" required />
@@ -94,21 +120,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <div class="form-floating mb-3 mb-md-0">
-                                        <input class="form-control <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" id="inputEmail" name="email" aria-describedby="emailHelp" placeholder="<?= lang('Auth.email') ?>" value="<?= $k->email; ?>" required />
-                                        <label for="inputEmail"><?= lang('Auth.email') ?></label>
-                                    </div>
 
-                                </div>
-                            </div>
                             <div class="col-md-6">
                                 <div class="form-check">
-                                  <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="password_hash" id="password_hash" value="checkedValue">
-                                    Reset Password?
-                                  </label>
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="password_hash" id="password_hash" value="checkedValue">
+                                        Reset Password?
+                                    </label>
                                 </div>
                             </div>
 
@@ -126,17 +144,28 @@
     <?= $this->Section('script'); ?>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        const swal = $('.swal').data('swal');
-        if (swal) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: swal,
-                showConfirmButton: false,
-                timer: 1500
-            })
+        $('.swal').each(function() {
+            const type = $(this).data('type');
+            const message = $(this).data('swal');
 
-        }
+            if (type === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else if (type === 'error') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
 
         function reset(id) {
             Swal.fire({

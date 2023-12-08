@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Login - SB Admin</title>
+    <title>Login - Progress Kegiatan</title>
     <link href="<?= base_url('asset-admin'); ?>/css/styles.css" rel="stylesheet" />
+    <link href="<?= base_url('asset-admin'); ?>/css/custom-auth.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-primary">
+<body class="bg-modal">
     <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
 

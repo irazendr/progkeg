@@ -29,7 +29,7 @@ class KegiatanController extends BaseController
 
         $this->db                           = \config\Database::connect();
         $this->builder                      = $this->db->table('progress_target');
-        $this->builder->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, daftar_kegiatan.kode_kegiatan as kode_keg, nama_kegiatan, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k');
+        $this->builder->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, daftar_kegiatan.kode_kegiatan as kode_keg, tipe_kegiatan, nama_kegiatan, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k');
         $this->builder->join('daftar_kegiatan', 'daftar_kegiatan.kode_kegiatan =  progress_target.kode_kegiatan');
         $this->builder->join('progress_kegiatan', 'progress_kegiatan.kode_kegiatan =  daftar_kegiatan.kode_kegiatan');
         $this->builder->join('users', 'users.username =  progress_kegiatan.user');
@@ -38,7 +38,7 @@ class KegiatanController extends BaseController
         $this->query                        = $this->builder->get();
 
         $this->builder2                     = $this->db->table('daftar_kegiatan');
-        $this->builder2->select('daftar_kegiatan.kode_kegiatan as id_k, progress_target.id as id_t, progress_target.kode_kegiatan as id_keg,nama_kegiatan, progress_target.target, progress_target.tgl_input as tgl_masuk, progress_target.user as user_t');
+        $this->builder2->select('daftar_kegiatan.kode_kegiatan as id_k, progress_target.id as id_t, progress_target.kode_kegiatan as id_keg, tipe_kegiatan,nama_kegiatan, progress_target.target, progress_target.tgl_input as tgl_masuk, progress_target.user as user_t');
         $this->builder2->join('progress_target', 'progress_target.kode_kegiatan = daftar_kegiatan.kode_kegiatan');
         $this->query2                       = $this->builder2->get();
 
@@ -54,7 +54,7 @@ class KegiatanController extends BaseController
         // $userInfo = $this->userModel->find($userID);
 
         $this->builder4                     = $this->db->table('daftar_kegiatan');
-        $this->builder4->select('daftar_kegiatan.kode_kegiatan as id_keg, nama_kegiatan, tgl_mulai, tgl_selesai, daftar_kegiatan.tgl_ubah, daftar_kegiatan.tgl_input AS tgl_masuk, daftar_kegiatan.user AS user_k');
+        $this->builder4->select('daftar_kegiatan.kode_kegiatan as id_keg, tipe_kegiatan, nama_kegiatan, tgl_mulai, tgl_selesai, daftar_kegiatan.tgl_ubah, daftar_kegiatan.tgl_input AS tgl_masuk, daftar_kegiatan.user AS user_k');
         $this->builder4->join('users', 'users.username = daftar_kegiatan.user');
         // $this->builder4->join('auth_users_permissions', 'auth_users_permissions.user_id = users.id');
         // $this->builder4->join('auth_permissions', 'auth_permissions.id = auth_users_permissions.permission_id');
@@ -67,6 +67,7 @@ class KegiatanController extends BaseController
         $data = [
             'title' => 'Daftar Kegiatan',
             'daftar_kegiatan' => $this->query4->getResult(),
+            'list_keg' => $this->query2->getResult(),
 
         ];
         return view('admin/kegiatan/index', $data);
@@ -75,6 +76,7 @@ class KegiatanController extends BaseController
     {
         $kode_kegiatan                      = $this->request->getPost('kode_kegiatan');
         $nama_kegiatan                      = $this->request->getPost('nama_kegiatan');
+        $tipe_kegiatan                      = $this->request->getPost('tipe_kegiatan');
         $tgl_mulai                          = $this->request->getPost('tgl_mulai');
         $tgl_selesai                        = $this->request->getPost('tgl_selesai');
         $user                               = $this->request->getPost('user');
@@ -87,6 +89,7 @@ class KegiatanController extends BaseController
         $data = [
             'kode_kegiatan' => $kode_kegiatan,
             'nama_kegiatan' => esc($nama_kegiatan),
+            'tipe_kegiatan' => $tipe_kegiatan,
             'slug_kegiatan' => $slug,
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai,
@@ -99,6 +102,7 @@ class KegiatanController extends BaseController
     public function update($kode_kegiatan)
     {
         $nama_kegiatan                      = $this->request->getPost('nama_kegiatan');
+        $tipe_kegiatan                      = $this->request->getPost('tipe_kegiatan');
         $tgl_mulai                          = $this->request->getPost('tgl_mulai');
         $tgl_selesai                        = $this->request->getPost('tgl_selesai');
         $user                               = $this->request->getPost('user');
@@ -109,6 +113,7 @@ class KegiatanController extends BaseController
         }
         $data = [
             'nama_kegiatan' => esc($nama_kegiatan),
+            'tipe_kegiatan' => $tipe_kegiatan,
             'slug_kegiatan' => $slug,
             'tgl_mulai' => $tgl_mulai,
             'tgl_selesai' => $tgl_selesai,
@@ -164,7 +169,7 @@ class KegiatanController extends BaseController
         // Use a new builder instance for the current query
         $currentQuery                       = clone $this->builder;
         $currentQuery2                      = clone $this->builder;
-        $currentQuery->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, nama_kegiatan, progress_target.id as target_id, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k')
+        $currentQuery->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, tipe_kegiatan, nama_kegiatan, progress_target.id as target_id, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k')
             ->join('daftar_kegiatan', 'daftar_kegiatan.kode_kegiatan =  progress_target.kode_kegiatan')
             ->join('progress_kegiatan', 'progress_kegiatan.kode_kegiatan =  daftar_kegiatan.kode_kegiatan')
             ->join('users', 'users.username =  progress_kegiatan.user');
@@ -250,7 +255,7 @@ class KegiatanController extends BaseController
             }
 
             $kode_kegiatan                  = $value[2];
-            $realisasi                      = $value[4];
+            $realisasi                      = $value[5];
             $user                           = $this->request->getPost('user');
             $tgl_input_string               = $value[1];
 
@@ -270,7 +275,7 @@ class KegiatanController extends BaseController
             // Use a new builder instance for the current query
             $currentQuery                   = clone $this->builder;
             $currentQuery2                  = clone $this->builder;
-            $currentQuery->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, nama_kegiatan, progress_target.id as target_id, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k')
+            $currentQuery->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, tipe_kegiatan, nama_kegiatan, progress_target.id as target_id, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k')
                 ->join('daftar_kegiatan', 'daftar_kegiatan.kode_kegiatan =  progress_target.kode_kegiatan')
                 ->join('progress_kegiatan', 'progress_kegiatan.kode_kegiatan =  daftar_kegiatan.kode_kegiatan')
                 ->join('users', 'users.username =  progress_kegiatan.user')
@@ -278,7 +283,7 @@ class KegiatanController extends BaseController
 
             // Apply the where condition to the current query
             $results                        = $currentQuery->get()->getResult();
-
+            // dd($data);
             // Jika ada hasil dari query
             if (!empty($results)) {
                 $target                     = $results[0]->target;
@@ -357,7 +362,7 @@ class KegiatanController extends BaseController
         ];
         // Use a new builder instance for the current query
         $currentQuery                       = clone $this->builder;
-        $currentQuery->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, nama_kegiatan, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k')
+        $currentQuery->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, tipe_kegiatan, nama_kegiatan, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k')
             ->join('daftar_kegiatan', 'daftar_kegiatan.kode_kegiatan =  progress_target.kode_kegiatan')
             ->join('progress_kegiatan', 'progress_kegiatan.kode_kegiatan =  daftar_kegiatan.kode_kegiatan');
         $currentQuery2                      = clone $this->builder;
