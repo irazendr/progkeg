@@ -75,6 +75,7 @@ $routes->group('kecamatan', ['filter' => 'role:Admin'], function ($routes) {
     $routes->post('tambah', 'Admin\KecamatanController::store');
     $routes->put('ubah/(:any)', 'Admin\KecamatanController::update/$1');
     $routes->delete('hapus/', 'Admin\KecamatanController::destroy');
+    $routes->post('import', 'Admin\KecamatanController::import_kecamatan');
 });
 
 // Daftar Kelurahan routes
@@ -83,6 +84,7 @@ $routes->group('kelurahan', ['filter' => 'role:Admin'], function ($routes) {
     $routes->post('tambah', 'Admin\KelurahanController::store');
     $routes->put('ubah/(:any)', 'Admin\KelurahanController::update/$1');
     $routes->delete('hapus/', 'Admin\KelurahanController::destroy');
+    $routes->post('import', 'Admin\KelurahanController::import_kelurahan');
 });
 
 // Daftar Mitra routes
@@ -91,6 +93,7 @@ $routes->group('mitra', ['filter' => 'role:Admin'], function ($routes) {
     $routes->post('tambah', 'Admin\MitraController::store');
     $routes->put('ubah/(:any)', 'Admin\MitraController::update/$1');
     $routes->delete('hapus/', 'Admin\MitraController::destroy');
+    $routes->post('import', 'Admin\MitraController::import_mitra');
 });
 
 // Akun routes

@@ -8,33 +8,36 @@ class KelurahanModel extends Model
 {
     protected $table            = 'kelurahan';
     protected $primaryKey       = 'kode_kelurahan';
-    protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $returnType       = 'object';
+    protected $allowedFields    = ['kode_kelurahan', 'kode_kecamatan', 'nama_kel_des'];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $createdField  = 'tgl_input';
+    protected $updatedField  = 'tgl_ubah';
 
     // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
+    protected $validationRules = [
+        'kode_kelurahan' => [
+            'rules' => 'required|is_unique[kelurahan.kode_kelurahan]',
+            'errors' => [
+                'is_unique' => 'Kelurahan/Desa Sudah Ada!',
+            ],
+        ],
+    ];
+    // protected $validationMessages   = [];
+    // protected $skipValidation       = false;
+    // protected $cleanValidationRules = true;
 
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    // // Callbacks
+    // protected $allowCallbacks = true;
+    // protected $beforeInsert   = [];
+    // protected $afterInsert    = [];
+    // protected $beforeUpdate   = [];
+    // protected $afterUpdate    = [];
+    // protected $beforeFind     = [];
+    // protected $afterFind      = [];
+    // protected $beforeDelete   = [];
+    // protected $afterDelete    = [];
 }
