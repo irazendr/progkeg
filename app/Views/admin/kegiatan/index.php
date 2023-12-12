@@ -56,7 +56,7 @@
                                                 <?= $k->nama_kegiatan; ?>
                                             </td>
                                             <td>
-                                                <?= $k->tipe_kegiatan; ?>
+                                                <?= $k->tipe; ?>
                                             </td>
                                             <td>
                                                 <?= date('d/m/Y', strtotime($k->tgl_mulai)); ?>
@@ -72,10 +72,10 @@
                                             </td>
                                             <td width="15%" class="text-center">
                                                 <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#ubahModal<?= $k->id_keg; ?>"><i class="fas fa-edit"></i>
-                                                    Ubah</button>
+                                                </button>
                                                 <?php if (in_groups('Admin')) : ?>
                                                     <button type="button" class="btn btn-danger btn-sm" onclick="hapus('<?= $k->id_keg; ?>')"><i class="fas fa-trash-alt"></i>
-                                                        Hapus</button>
+                                                    </button>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
@@ -111,9 +111,10 @@
                         <div class="mb-3">
                             <div class="form-floating mb-3 mb-md-0">
                                 <select class="form-select" aria-label="Default select example" id="tipe_kegiatan" name="tipe_kegiatan">
-                                    <option value="Pemuktahiran">Pemuktahiran</option>
-                                    <option value="Pencacahan">Pencacahan</option>
-                                    <option value="Pengolahan">Pengolahan</option>
+                                    <?php foreach ($list_tipe as $m) : ?>
+                                        <option value="<?= $m->id; ?>">
+                                            <?= $m->tipe; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                                 <label for="tipe_kegiatan">Tipe Kegiatan</label>
                             </div>
@@ -162,9 +163,9 @@
                             <div class="mb-3">
                                 <div class="form-floating mb-3 mb-md-0">
                                     <select class="form-select" aria-label="Default select example" id="tipe_kegiatan" name="tipe_kegiatan" disabled>
-                                        <?php foreach ($list_keg as $m) : ?>
-                                            <option value="<?= $l->tipe_kegiatan; ?>" <?php if ($m->id_k == $l->id_keg) : ?>selected<?php endif ?>>
-                                                <?= $l->tipe_kegiatan; ?></option>
+                                        <?php foreach ($list_tipe as $m) : ?>
+                                            <option value="<?= $l->tipe_kegiatan; ?>" <?php if ($m->id == $l->tipe_kegiatan) : ?>selected<?php endif ?>>
+                                                <?= $m->tipe; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                     <label for="tipe_kegiatan">Tipe Kegiatan</label>
@@ -248,7 +249,8 @@
                                     text: response.success,
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = "<?= base_url('daftar-kegiatan'); ?>"
+                                        window.location.href =
+                                            "<?= base_url('daftar-kegiatan'); ?>"
                                     }
                                 })
                             }

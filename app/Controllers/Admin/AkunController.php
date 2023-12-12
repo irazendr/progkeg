@@ -138,7 +138,7 @@ class AkunController extends BaseController
     //         ];
     //         echo json_encode($result);
     //     } else {
-    //         exit('404 Not Found');
+    //         return redirect()->back()->with('error', 'Terjadi Kesalahan Pada Sistem!');
     //     }
     // }
 }

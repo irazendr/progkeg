@@ -17,20 +17,20 @@ class MitraController extends BaseController
         $this->mitraModel = new MitraModel();
         $this->db = \config\Database::connect();
         $this->builder = $this->db->table('mitra');
-        $this->builder->select('id_mitra, nama_lengkap, role, tgl_input, tgl_ubah');
-        // $this->builder->join('auth_groups_users', 'auth_groups_users.user_id = users.id');
-        // $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
+        $this->builder->select('id_mitra, nama_lengkap, role,role_petugas, tgl_input, tgl_ubah');
+        $this->builder->join('role_petugas', 'role_petugas.id = mitra.role');
         $this->query = $this->builder->get();
 
-        // $this->builder2 = $this->db->table('auth_groups');
-        // $this->builder2->select('id, name');
-        // $this->query2 = $this->builder2->get();
+        $this->builder2                     = $this->db->table('role_petugas');
+        $this->builder2->select('id, role_petugas');
+        $this->query2                       = $this->builder2->get();
     }
     public function index()
     {
         $data = [
             'title' => 'Daftar Mitra',
             'data_mitra' => $this->query->getResult(),
+            'list_role' => $this->query2->getResult(),
 
         ];
 
@@ -52,30 +52,19 @@ class MitraController extends BaseController
         $this->mitraModel->insert($data);
         return redirect()->back()->with('success', 'Data Mitra Berhasil Ditambahkan.');
     }
-    // public function update($kode_kegiatan)
-    // {
-    //     $nama_kegiatan                      = $this->request->getPost('nama_kegiatan');
-    //     $tipe_kegiatan                      = $this->request->getPost('tipe_kegiatan');
-    //     $tgl_mulai                          = $this->request->getPost('tgl_mulai');
-    //     $tgl_selesai                        = $this->request->getPost('tgl_selesai');
-    //     $user                               = $this->request->getPost('user');
+    public function update($id_mitra)
+    {
+        $nama_lengkap                      = $this->request->getPost('nama_lengkap');
+        $role                      = $this->request->getPost('role');
 
-    //     // Check if $nama_kegiatan is not null and is a string
-    //     if (!is_null($nama_kegiatan) && is_string($nama_kegiatan)) {
-    //         $slug                           = url_title($nama_kegiatan, '-', TRUE);
-    //     }
-    //     $data = [
-    //         'nama_kegiatan' => esc($nama_kegiatan),
-    //         'tipe_kegiatan' => $tipe_kegiatan,
-    //         'slug_kegiatan' => $slug,
-    //         'tgl_mulai' => $tgl_mulai,
-    //         'tgl_selesai' => $tgl_selesai,
-    //         'user' => $user,
+        $data = [
+            'nama_lengkap' => $nama_lengkap,
+            'role' => $role,
 
-    //     ];
-    //     $this->KegiatanModel->update($kode_kegiatan, $data);
-    //     return redirect()->back()->with('success', 'Data Kegiatan Berhasil Diubah.');
-    // }
+        ];
+        $this->mitraModel->update($id_mitra, $data);
+        return redirect()->back()->with('success', 'Data Mitra ' . esc($nama_lengkap) . ' Berhasil Diubah.');
+    }
 
     public function import_mitra()
     {

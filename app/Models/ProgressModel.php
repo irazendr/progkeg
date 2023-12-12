@@ -9,7 +9,7 @@ class ProgressModel extends Model
     protected $table            = 'progress_kegiatan';
     protected $primaryKey       = 'id';
     protected $returnType       = 'object';
-    protected $allowedFields    = ['kode_kegiatan', 'realisasi', 'user', 'tgl_input', 'tgl_update', 'id_target'];
+    protected $allowedFields    = ['kode_kegiatan', 'id_mitra_pcl', 'id_mitra_pml', 'id_kec', 'id_kel', 'realisasi', 'user', 'tgl_input', 'tgl_update', 'id_target'];
 
     // Dates
     protected $useTimestamps = false;

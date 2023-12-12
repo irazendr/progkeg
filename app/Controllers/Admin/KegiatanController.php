@@ -17,8 +17,29 @@ use DateTime;
 class KegiatanController extends BaseController
 {
 
-    protected $progressModel, $targetModel, $userModel, $permissionModel;
-    protected $db, $builder, $builder2, $builder3, $builder4, $query, $query2, $query3, $query4;
+    protected $progressModel,
+        $targetModel,
+        $userModel,
+        $permissionModel;
+    protected $db,
+        $builder,
+        $builder2,
+        $builder3,
+        $builder4,
+        $builder5,
+        $builder6,
+        $builder7,
+        $builder8,
+        $builder9,
+        $query,
+        $query2,
+        $query3,
+        $query4,
+        $query5,
+        $query6,
+        $query7,
+        $query8,
+        $query9;
     public function __construct()
     {
         // Memuat library Myth/Auth
@@ -29,12 +50,14 @@ class KegiatanController extends BaseController
 
         $this->db                           = \config\Database::connect();
         $this->builder                      = $this->db->table('progress_target');
-        $this->builder->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, daftar_kegiatan.kode_kegiatan as kode_keg, tipe_kegiatan, nama_kegiatan, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k');
+        $this->builder->select('progress_kegiatan.id as prog_id, progress_kegiatan.kode_kegiatan as id_keg, daftar_kegiatan.kode_kegiatan as kode_keg, tipe_kegiatan, nama_kegiatan, id_mitra_pcl, id_mitra_pml, pcl.nama_lengkap as pcl_nama, pml.nama_lengkap as pml_nama, id_kec, nama_kec, id_kel, nama_kel_des, target, realisasi, tgl_mulai, tgl_selesai, progress_kegiatan.tgl_update, progress_kegiatan.tgl_input as tgl_masuk, progress_kegiatan.user as user_k');
         $this->builder->join('daftar_kegiatan', 'daftar_kegiatan.kode_kegiatan =  progress_target.kode_kegiatan');
         $this->builder->join('progress_kegiatan', 'progress_kegiatan.kode_kegiatan =  daftar_kegiatan.kode_kegiatan');
         $this->builder->join('users', 'users.username =  progress_kegiatan.user');
-        // $this->builder->join('auth_users_permissions', 'auth_users_permissions.user_id =  users.id');
-        // $this->builder->join('auth_permissions', 'auth_permissions.id= auth_users_permissions.permission_id');
+        $this->builder->join('mitra as pcl', 'pcl.id_mitra =  progress_kegiatan.id_mitra_pcl');
+        $this->builder->join('mitra as pml', 'pml.id_mitra =  progress_kegiatan.id_mitra_pml');
+        $this->builder->join('kecamatan', 'kecamatan.kode_kecamatan =  progress_kegiatan.id_kec');
+        $this->builder->join('kelurahan', 'kelurahan.kode_kelurahan =  progress_kegiatan.id_kel');
         $this->query                        = $this->builder->get();
 
         $this->builder2                     = $this->db->table('daftar_kegiatan');
@@ -46,28 +69,43 @@ class KegiatanController extends BaseController
         $this->builder3->select('kode_kegiatan, nama_kegiatan');
         $this->query3                       = $this->builder3->get();
 
-        // // Mendapatkan user ID dari sesi
-        // $session = session();
-        // $userID = $session->get('logged_in');
-
-        // // Mendapatkan informasi pengguna dari database
-        // $userInfo = $this->userModel->find($userID);
-
         $this->builder4                     = $this->db->table('daftar_kegiatan');
-        $this->builder4->select('daftar_kegiatan.kode_kegiatan as id_keg, tipe_kegiatan, nama_kegiatan, tgl_mulai, tgl_selesai, daftar_kegiatan.tgl_ubah, daftar_kegiatan.tgl_input AS tgl_masuk, daftar_kegiatan.user AS user_k');
+        $this->builder4->select('daftar_kegiatan.kode_kegiatan as id_keg, tipe, tipe_kegiatan, nama_kegiatan, tgl_mulai, tgl_selesai, daftar_kegiatan.tgl_ubah, daftar_kegiatan.tgl_input AS tgl_masuk, daftar_kegiatan.user AS user_k');
         $this->builder4->join('users', 'users.username = daftar_kegiatan.user');
-        // $this->builder4->join('auth_users_permissions', 'auth_users_permissions.user_id = users.id');
-        // $this->builder4->join('auth_permissions', 'auth_permissions.id = auth_users_permissions.permission_id');
-        // $this->builder4->where('auth_users_permissions.user_id', $userInfo->id);
+        $this->builder4->join('tipe_kegiatan', 'tipe_kegiatan.id = daftar_kegiatan.tipe_kegiatan');
         $this->query4                       = $this->builder4->get();
-        // dd($this->query4->getResult());
+
+        $this->builder5                     = $this->db->table('tipe_kegiatan');
+        $this->builder5->select('id, tipe');
+        $this->query5                       = $this->builder5->get();
+
+        $this->builder6                     = $this->db->table('mitra');
+        $this->builder6->select('id_mitra, nama_lengkap, role');
+        $this->builder6->where('role', 1);
+        $this->query6                       = $this->builder6->get();
+
+        $this->builder7                     = $this->db->table('mitra');
+        $this->builder7->select('id_mitra, nama_lengkap, role');
+        $this->builder7->where('role', 2);
+        $this->query7                       = $this->builder7->get();
+
+        $this->builder8                     = $this->db->table('kecamatan');
+        $this->builder8->select('kode_kecamatan, nama_kec');
+        $this->query8                       = $this->builder8->get();
+
+        $this->builder9                    = $this->db->table('kelurahan');
+        $this->builder9->select('kode_kelurahan, nama_kel_des');
+        $this->query9                       = $this->builder9->get();
     }
     public function index()
     {
+
         $data = [
             'title' => 'Daftar Kegiatan',
             'daftar_kegiatan' => $this->query4->getResult(),
             'list_keg' => $this->query2->getResult(),
+            'list_tipe' => $this->query5->getResult(),
+
 
         ];
         return view('admin/kegiatan/index', $data);
@@ -133,7 +171,7 @@ class KegiatanController extends BaseController
             ];
             echo json_encode($result);
         } else {
-            exit('404 Not Found');
+            return redirect()->back()->with('error', 'Terjadi Kesalahan Pada Sistem!');
         }
     }
 
@@ -143,6 +181,10 @@ class KegiatanController extends BaseController
             'title' => 'Histori Input Progress Kegiatan',
             'daftar_kegiatan' => $this->query->getResult(),
             'list_keg' => $this->query2->getResult(),
+            'list_mitra_pml' => $this->query6->getResult(),
+            'list_mitra_pcl' => $this->query7->getResult(),
+            'list_kec' => $this->query8->getResult(),
+            'list_kel' => $this->query9->getResult(),
 
         ];
         // dd($this->query->getResult());
@@ -152,6 +194,10 @@ class KegiatanController extends BaseController
     public function progress()
     {
         $kode_kegiatan                      = $this->request->getPost('kode_kegiatan');
+        $id_mitra_pcl                      = $this->request->getPost('id_mitra_pcl');
+        $id_mitra_pml                      = $this->request->getPost('id_mitra_pml');
+        $id_kec                      = $this->request->getPost('id_kec');
+        $id_kel                      = $this->request->getPost('id_kel');
         $realisasi                          = $this->request->getPost('realisasi');
         $user                               = $this->request->getPost('user');
         $tgl_input                          = $this->request->getPost('tgl_input');
@@ -159,6 +205,10 @@ class KegiatanController extends BaseController
 
         $data = [
             'kode_kegiatan' => $kode_kegiatan,
+            'id_mitra_pcl' => $id_mitra_pcl,
+            'id_mitra_pml' => $id_mitra_pml,
+            'id_kec' => $id_kec,
+            'id_kel' => $id_kel,
             'realisasi' => $realisasi,
             'user' => $user,
             'tgl_input' => $tgl_input,
@@ -225,7 +275,7 @@ class KegiatanController extends BaseController
                 $this->progressModel->insert($data);
                 return redirect()->back()->with('success', 'Data Progress Kegiatan Berhasil Ditambahkan.');
             } else {
-                return redirect()->back()->with('error', 'Gagal Mengimport. Progress Kegiatan Melebihi Target!');
+                return redirect()->back()->with('error', 'Gagal Menambahkan. Progress Kegiatan Melebihi Target!');
             }
         }
     }
@@ -254,10 +304,14 @@ class KegiatanController extends BaseController
                 continue;
             }
 
-            $kode_kegiatan                  = $value[2];
-            $realisasi                      = $value[5];
-            $user                           = $this->request->getPost('user');
             $tgl_input_string               = $value[1];
+            $kode_kegiatan                  = $value[2];
+            $id_mitra_pcl                  = $value[5];
+            $id_mitra_pml                  = $value[6];
+            $id_kec                  = $value[7];
+            $id_kel                  = $value[8];
+            $realisasi                      = $value[9];
+            $user                           = $this->request->getPost('user');
 
             // Convert the string to a DateTime object
             $dateObject                     = DateTime::createFromFormat('m/d/Y', $tgl_input_string);
@@ -266,6 +320,10 @@ class KegiatanController extends BaseController
 
             $data = [
                 'kode_kegiatan' => $kode_kegiatan,
+                'id_mitra_pcl' => $id_mitra_pcl,
+                'id_mitra_pml' => $id_mitra_pml,
+                'id_kec' => $id_kec,
+                'id_kel' => $id_kel,
                 'realisasi' => $realisasi,
                 'user' => $user,
                 'tgl_input' => $tgl_input,
@@ -411,7 +469,7 @@ class KegiatanController extends BaseController
             ];
             echo json_encode($result);
         } else {
-            exit('404 Not Found');
+            return redirect()->back()->with('error', 'Terjadi Kesalahan Pada Sistem!');
         }
     }
 
@@ -571,7 +629,7 @@ class KegiatanController extends BaseController
             ];
             echo json_encode($result);
         } else {
-            exit('404 Not Found');
+            return redirect()->back()->with('error', 'Terjadi Kesalahan Pada Sistem!');
         }
     }
     public function export_excel()
@@ -585,12 +643,17 @@ class KegiatanController extends BaseController
         $activeWorksheet->setCellValue('E1', 'Tanggal Mulai');
         $activeWorksheet->setCellValue('F1', 'Tanggal Selesai');
         $activeWorksheet->setCellValue('G1', 'Target');
-        $activeWorksheet->setCellValue('H1', 'Realisasi');
-        $activeWorksheet->setCellValue('I1', 'User');
-        $activeWorksheet->setCellValue('J1', 'Tanggal Diperbarui');
+        $activeWorksheet->setCellValue('H1', 'Nama PCL');
+        $activeWorksheet->setCellValue('I1', 'Nama PML');
+        $activeWorksheet->setCellValue('J1', 'Kecamatan');
+        $activeWorksheet->setCellValue('K1', 'Kelurahan');
+        $activeWorksheet->setCellValue('L1', 'Realisasi');
+        $activeWorksheet->setCellValue('M1', 'User');
+        $activeWorksheet->setCellValue('N1', 'Tanggal Diperbarui');
 
         $row                                = 2;
         $laporan                            = $this->query->getResult();
+        // dd($laporan);
 
         foreach ($laporan as $key => $item) {
             $activeWorksheet
@@ -601,9 +664,13 @@ class KegiatanController extends BaseController
                 ->setCellValue('E' . $row, $item->tgl_mulai)
                 ->setCellValue('F' . $row, $item->tgl_selesai)
                 ->setCellValue('G' . $row, $item->target)
-                ->setCellValue('H' . $row, $item->realisasi)
-                ->setCellValue('I' . $row, $item->user_k)
-                ->setCellValue('J' . $row, $item->tgl_update);
+                ->setCellValue('H' . $row, $item->pcl_nama)
+                ->setCellValue('I' . $row, $item->pml_nama)
+                ->setCellValue('J' . $row, $item->nama_kec)
+                ->setCellValue('K' . $row, $item->nama_kel_des)
+                ->setCellValue('L' . $row, $item->realisasi)
+                ->setCellValue('M' . $row, $item->user_k)
+                ->setCellValue('N' . $row, $item->tgl_update);
             $row++;
         }
 

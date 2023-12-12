@@ -1,7 +1,6 @@
 <?= $this->extend('admin/layout/template'); ?>
 <?= $this->Section('style'); ?>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <?= $this->endSection(); ?>
 <?= $this->Section('content'); ?>
 <div id="layoutSidenav_content">
@@ -20,17 +19,15 @@
                             Target Realisasi Kegiatan
                         </div>
                         <div class="card-body">
-                            <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal"
-                                data-bs-target="#tambahModal">
+                            <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#tambahModal">
                                 <i class="fas fa-plus"></i> Tambah
                             </button>
                             <?php if (session('success')) : ?>
-                            <div class="swal" data-type="success" data-swal="<?= session('success'); ?>"></div>
+                                <div class="swal" data-type="success" data-swal="<?= session('success'); ?>"></div>
                             <?php endif; ?>
 
                             <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>
-                            <div class="swal" data-type="error"
-                                data-swal="<?= $validation->getError('kode_kegiatan'); ?>"></div>
+                                <div class="swal" data-type="error" data-swal="<?= $validation->getError('kode_kegiatan'); ?>"></div>
                             <?php endif; ?>
                             <table class="table table-striped table-hover" id="datatablesSimple">
                                 <thead>
@@ -47,34 +44,32 @@
                                 <tbody>
                                     <?php $no = 1; ?>
                                     <?php foreach ($target as $k) : ?>
-                                    <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td>
-                                            <?= $k->id_keg; ?>
-                                        </td>
-                                        <td>
-                                            <?= $k->nama_kegiatan; ?>
-                                        </td>
-                                        <td>
-                                            <?= $k->target; ?>
-                                        </td>
-                                        <td>
-                                            <?= date('d/m/Y', strtotime($k->tgl_masuk)); ?>
-                                        </td>
-                                        <td>
-                                            <?= $k->user_t; ?>
-                                        </td>
-                                        <td width="15%" class="text-center">
-                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#ubahModal<?= $k->id_t; ?>"><i class="fas fa-edit"></i>
-                                                Update</button>
-                                            <?php if (in_groups('Admin')) : ?>
-                                            <button type="button" class="btn btn-danger btn-sm"
-                                                onclick="hapus(<?= $k->id_t; ?>)"><i class="fas fa-trash-alt"></i>
-                                                Hapus</button>
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td>
+                                                <?= $k->id_keg; ?>
+                                            </td>
+                                            <td>
+                                                <?= $k->nama_kegiatan; ?>
+                                            </td>
+                                            <td>
+                                                <?= $k->target; ?>
+                                            </td>
+                                            <td>
+                                                <?= date('d/m/Y', strtotime($k->tgl_masuk)); ?>
+                                            </td>
+                                            <td>
+                                                <?= $k->user_t; ?>
+                                            </td>
+                                            <td width="15%" class="text-center">
+                                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#ubahModal<?= $k->id_t; ?>"><i class="fas fa-edit"></i>
+                                                </button>
+                                                <?php if (in_groups('Admin')) : ?>
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="hapus(<?= $k->id_t; ?>)"><i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -98,18 +93,16 @@
                         <?= csrf_field(); ?>
                         <div class="mb-3">
                             <div class="form-floating mb-3 mb-md-0">
-                                <select
-                                    class="form-select <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>is-invalid<?php endif ?>"
-                                    aria-label="Default select example" id="kode_kegiatan" name="kode_kegiatan">
+                                <select class="form-select <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>is-invalid<?php endif ?>" aria-label="Default select example" id="kode_kegiatan" name="kode_kegiatan">
                                     <option value="" disabled selected>--Pilih Kegiatan--</option>
                                     <?php foreach ($list_keg as $l) : ?>
-                                    <option value="<?= $l->kode_kegiatan; ?>"><?= $l->nama_kegiatan; ?></option>
+                                        <option value="<?= $l->kode_kegiatan; ?>"><?= $l->nama_kegiatan; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <label for="target">Nama Kegiatan</label>
                                 <div class="invalid-feedback">
                                     <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>
-                                    <?= $validation->getError('kode_kegiatan'); ?>
+                                        <?= $validation->getError('kode_kegiatan'); ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -133,131 +126,125 @@
 
 
     <?php foreach ($target as $l) : ?>
-    <!-- Modal Update -->
-    <div class="modal fade" id="ubahModal<?= $l->id_t; ?>" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-modal text-white">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Update Target Realisasi
-                        Kegiatan</h5>
-                    <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
-                </div>
-                <div class="modal-body">
-                    <form action="<?= base_url('input-target/ubah/' . $l->id_t); ?>" method="post">
-                        <?= csrf_field(); ?>
-                        <input type="hidden" name="_method" value="PUT">
-                        <div class="mb-3">
-                            <div class="form-floating mb-3 mb-md-0">
-                                <select
-                                    class="form-select <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>is-invalid<?php endif ?>"
-                                    aria-label="Default select example" id="kode_kegiatan" name="kode_kegiatan"
-                                    disabled>
-                                    <?php foreach ($list_keg as $m) : ?>
-                                    <option value="<?= $m->kode_kegiatan; ?>"
-                                        <?php if ($m->kode_kegiatan == $l->id_keg) : ?>selected<?php endif ?>>
-                                        <?= $m->nama_kegiatan; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <label for="">Nama Kegiatan</label>
-                                <div class="invalid-feedback">
-                                    <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>
-                                    <?= $validation->getError('kode_kegiatan'); ?>
-                                    <?php endif; ?>
+        <!-- Modal Update -->
+        <div class="modal fade" id="ubahModal<?= $l->id_t; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-modal text-white">
+                        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Update Target Realisasi
+                            Kegiatan</h5>
+                        <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="<?= base_url('input-target/ubah/' . $l->id_t); ?>" method="post">
+                            <?= csrf_field(); ?>
+                            <input type="hidden" name="_method" value="PUT">
+                            <div class="mb-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <select class="form-select <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>is-invalid<?php endif ?>" aria-label="Default select example" id="kode_kegiatan" name="kode_kegiatan" disabled>
+                                        <?php foreach ($list_keg as $m) : ?>
+                                            <option value="<?= $m->kode_kegiatan; ?>" <?php if ($m->kode_kegiatan == $l->id_keg) : ?>selected<?php endif ?>>
+                                                <?= $m->nama_kegiatan; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <label for="">Nama Kegiatan</label>
+                                    <div class="invalid-feedback">
+                                        <?php if (isset($validation) && $validation->getError('kode_kegiatan')) : ?>
+                                            <?= $validation->getError('kode_kegiatan'); ?>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-floating mb-3 mb-md-0">
-                                <input type="number" name="target" id="target" class="form-control"
-                                    value="<?= $l->target; ?>" required>
-                                <label for="target">Target</label>
+                            <div class="mb-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input type="number" name="target" id="target" class="form-control" value="<?= $l->target; ?>" required>
+                                    <label for="target">Target</label>
+                                </div>
                             </div>
-                        </div>
-                        <input type="hidden" id="user" name="user" value="<?= user()->username; ?>">
+                            <input type="hidden" id="user" name="user" value="<?= user()->username; ?>">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-                </form>
             </div>
         </div>
-    </div>
     <?php endforeach; ?>
 
     <?= $this->endSection(); ?>
     <?= $this->Section('script'); ?>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-    $('.swal').each(function() {
-        const type = $(this).data('type');
-        const message = $(this).data('swal');
+        $('.swal').each(function() {
+            const type = $(this).data('type');
+            const message = $(this).data('swal');
 
-        if (type === 'success') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: message,
-                showConfirmButton: false,
-                timer: 1500
-            });
-        } else if (type === 'error') {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: message,
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-    });
-
-    function hapus(id) {
-        Swal.fire({
-            title: 'Hapus',
-            text: "Anda Yakin Data Target Realisasi Kegiatan Akan Dihapus?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Hapus',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // User clicked "Hapus" button
-                $.ajax({
-                    type: 'POST',
-                    url: '<?= base_url("input-target/hapus"); ?>',
-                    data: {
-                        _method: 'delete',
-                        <?= csrf_token() ?>: '<?= csrf_hash() ?>',
-                        id: id
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.success,
-                            }).then((result) => {
-                                if (result.value) {
-                                    window.location.href =
-                                        "<?= base_url('input-target'); ?>"
-
-                                }
-
-                            })
-                        }
-                    }
-                })
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // User clicked "Batal" button
-                Swal.fire('Batal', 'Tidak ada data yang dihapus', 'info');
+            if (type === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else if (type === 'error') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
+        });
 
-        })
-    }
+        function hapus(id) {
+            Swal.fire({
+                title: 'Hapus',
+                text: "Anda Yakin Data Target Realisasi Kegiatan Akan Dihapus?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User clicked "Hapus" button
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?= base_url("input-target/hapus"); ?>',
+                        data: {
+                            _method: 'delete',
+                            <?= csrf_token() ?>: '<?= csrf_hash() ?>',
+                            id: id
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.success,
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location.href =
+                                            "<?= base_url('input-target'); ?>"
+
+                                    }
+
+                                })
+                            }
+                        }
+                    })
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // User clicked "Batal" button
+                    Swal.fire('Batal', 'Tidak ada data yang dihapus', 'info');
+                }
+
+            })
+        }
     </script>
     <?= $this->endSection(); ?>
