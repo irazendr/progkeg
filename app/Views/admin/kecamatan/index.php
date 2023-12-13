@@ -1,6 +1,7 @@
 <?= $this->extend('admin/layout/template'); ?>
 <?= $this->Section('style'); ?>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <?= $this->endSection(); ?>
 <?= $this->Section('content'); ?>
 <div id="layoutSidenav_content">
@@ -16,19 +17,21 @@
                     Daftar Mitra
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#tambahModal">
+                    <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal"
+                        data-bs-target="#tambahModal">
                         <i class="fas fa-plus"></i> Tambah
                     </button>
-                    <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#importModal">
+                    <button type="button" class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal"
+                        data-bs-target="#importModal">
                         <i class="fas fa-upload"></i> Import Data
                     </button>
                     <?php if (session('success')) : ?>
-                        <div class="swal" data-type="success" data-swal="<?= session('success'); ?>"></div>
+                    <div class="swal" data-type="success" data-swal="<?= session('success'); ?>"></div>
                     <?php endif; ?>
 
                     <?php if (isset($validation) && $validation->getError('kode_kecamatan')) : ?>
-                        <div class="swal" data-type="error" data-swal="<?= $validation->getError('kode_kecamatan'); ?>">
-                        </div>
+                    <div class="swal" data-type="error" data-swal="<?= $validation->getError('kode_kecamatan'); ?>">
+                    </div>
                     <?php endif; ?>
                     <table class="table table-striped table-hover" id="datatablesSimple">
                         <thead>
@@ -43,24 +46,27 @@
                         <tbody>
                             <?php $no = 1; ?>
                             <?php foreach ($data_kecamatan as $kec) : ?>
-                                <tr>
-                                    <td><?= $no++; ?></td>
-                                    <td>
-                                        <?= $kec->kode_kecamatan; ?>
-                                    </td>
-                                    <td>
-                                        <?= $kec->nama_kec; ?>
-                                    </td>
-                                    <td>
-                                        <?= date('d/m/Y H:i:s', strtotime($kec->tgl_input)); ?>
-                                    </td>
-                                    <td width="15%" class="text-center">
-                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#ubahModal<?= $kec->kode_kecamatan; ?>"><i class="fas fa-edit"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="hapus(<?= $kec->kode_kecamatan; ?>)"><i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td>
+                                    <?= $kec->kode_kecamatan; ?>
+                                </td>
+                                <td>
+                                    <?= $kec->nama_kec; ?>
+                                </td>
+                                <td>
+                                    <?= date('d/m/Y H:i:s', strtotime($kec->tgl_input)); ?>
+                                </td>
+                                <td width="15%" class="text-center">
+                                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#ubahModal<?= $kec->kode_kecamatan; ?>"><i
+                                            class="fas fa-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="hapus(<?= $kec->kode_kecamatan; ?>)"><i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
@@ -83,10 +89,12 @@
                         <?= csrf_field(); ?>
                         <div class="mb-3">
                             <label for="kode_kecamatan">Kode Kecamatan</label>
-                            <input type="text" name="kode_kecamatan" id="kode_kecamatan" class="form-control <?php if (isset($validation) && $validation->getError('kode_kecamatan')) : ?>is-invalid<?php endif ?>" required>
+                            <input type="text" name="kode_kecamatan" id="kode_kecamatan"
+                                class="form-control <?php if (isset($validation) && $validation->getError('kode_kecamatan')) : ?>is-invalid<?php endif ?>"
+                                required>
                             <div class="invalid-feedback">
                                 <?php if (isset($validation) && $validation->getError('kode_kecamatan')) : ?>
-                                    <?= $validation->getError('kode_kecamatan'); ?>
+                                <?= $validation->getError('kode_kecamatan'); ?>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -105,12 +113,50 @@
         </div>
     </div>
 
+
+    <?php foreach ($data_kecamatan as $l) : ?>
+    <!-- Modal Ubah -->
+    <div class="modal fade" id="ubahModal<?= $l->kode_kecamatan; ?>" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-modal text-white">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-edit"></i> Ubah Data
+                        Kecamatan</h5>
+                    <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
+                </div>
+                <div class="modal-body">
+                    <form action="<?= base_url('kecamatan/ubah/' . $l->kode_kecamatan); ?>" method="post">
+                        <?= csrf_field(); ?>
+                        <input type="hidden" name="_method" value="PUT">
+                        <div class="mb-3">
+                            <label for="kode_kecamatan">Kode Kecamatan</label>
+                            <input type="text" name="kode_kecamatan" id="kode_kecamatan" class="form-control"
+                                value="<?= $l->kode_kecamatan; ?>" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_kec">Nama Kecamatan</label>
+                            <input type="text" name="nama_kec" id="nama_kec" class="form-control"
+                                value="<?= $l->nama_kec; ?>" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Ubah</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endforeach; ?>
+
     <!-- Modal Import-->
     <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-modal text-white">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-upload"></i> Import Data Kecamatan
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-upload"></i> Import Data
+                        Kecamatan
                     </h5>
                     <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
                 </div>
@@ -137,73 +183,74 @@
     <?= $this->Section('script'); ?>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        $('.swal').each(function() {
-            const type = $(this).data('type');
-            const message = $(this).data('swal');
+    $('.swal').each(function() {
+        const type = $(this).data('type');
+        const message = $(this).data('swal');
 
-            if (type === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: message,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            } else if (type === 'error') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: message,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
-        });
-
-        function hapus(kode_kecamatan) {
+        if (type === 'success') {
             Swal.fire({
-                title: 'Hapus',
-                text: "Anda Yakin Data Kecamatan Akan Dihapus?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Hapus',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // User clicked "Hapus" button
-                    $.ajax({
-                        type: 'POST',
-                        url: '<?= base_url("kecamatan/hapus"); ?>',
-                        data: {
-                            _method: 'delete',
-                            <?= csrf_token() ?>: '<?= csrf_hash() ?>',
-                            kode_kecamatan: kode_kecamatan
-                        },
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.success,
-                                }).then((result) => {
-                                    if (result.value) {
-                                        window.location.href = "<?= base_url('kecamatan'); ?>"
-
-                                    }
-
-                                })
-                            }
-                        }
-                    })
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // User clicked "Batal" button
-                    Swal.fire('Batal', 'Tidak ada data yang dihapus', 'info');
-                }
-
-            })
+                icon: 'success',
+                title: 'Berhasil',
+                text: message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else if (type === 'error') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: message,
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
+    });
+
+    function hapus(kode_kecamatan) {
+        Swal.fire({
+            title: 'Hapus',
+            text: "Anda Yakin Data Kecamatan Akan Dihapus?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // User clicked "Hapus" button
+                $.ajax({
+                    type: 'POST',
+                    url: '<?= base_url("kecamatan/hapus"); ?>',
+                    data: {
+                        _method: 'delete',
+                        <?= csrf_token() ?>: '<?= csrf_hash() ?>',
+                        kode_kecamatan: kode_kecamatan
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.success,
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.location.href =
+                                        "<?= base_url('kecamatan'); ?>"
+
+                                }
+
+                            })
+                        }
+                    }
+                })
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // User clicked "Batal" button
+                Swal.fire('Batal', 'Tidak ada data yang dihapus', 'info');
+            }
+
+        })
+    }
     </script>
     <?= $this->endSection(); ?>
