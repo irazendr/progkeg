@@ -272,6 +272,7 @@ class KegiatanController extends BaseController
             $data['id_target']              = $target_id;
 
             if ($total_realisasi < $target) {
+
                 $this->progressModel->insert($data);
                 return redirect()->back()->with('success', 'Data Progress Kegiatan Berhasil Ditambahkan.');
             } else {
