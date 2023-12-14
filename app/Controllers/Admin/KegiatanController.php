@@ -7,6 +7,8 @@ use App\Models\ProgressModel;
 use App\Models\TargetModel;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\PermissionModel;
+use App\Models\KelurahanModel;
+use App\Models\KecamatanModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
@@ -20,6 +22,8 @@ class KegiatanController extends BaseController
     protected $progressModel,
         $targetModel,
         $userModel,
+        $kelModel,
+        $kecModel,
         $permissionModel;
     protected $db,
         $builder,
@@ -46,6 +50,8 @@ class KegiatanController extends BaseController
         $this->userModel                    = new UserModel();
         $this->permissionModel              = new PermissionModel();
         $this->progressModel                = new ProgressModel();
+        $this->kelModel                = new KelurahanModel();
+        $this->kecModel                = new KecamatanModel();
         $this->targetModel                  = new TargetModel();
 
         $this->db                           = \config\Database::connect();
@@ -190,6 +196,22 @@ class KegiatanController extends BaseController
         // dd($this->query->getResult());
         return view('admin/kegiatan/progress', $data);
     }
+
+    public function getKelurahanByKecamatan()
+    {
+        $id_kec = $this->request->getPost('id_kec');
+        $kelurahan = $this->kelModel->getAllKelurahan($id_kec);
+
+        return $this->response->setJSON(['kelurahan' => $kelurahan]);
+    }
+
+    public function daftarKecamatan()
+    {
+        $data = $this->kecModel->getAllKecamatan();
+        return $this->response->setJSON($data);
+    }
+
+
 
     public function progress()
     {

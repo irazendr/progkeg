@@ -87,7 +87,7 @@
                     <h5 data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></h5>
                 </div>
                 <div class="modal-body">
-                    <form action="<?= base_url('kecamatan/tambah'); ?>" method="post">
+                    <form action="<?= base_url('kelurahan/tambah'); ?>" method="post">
                         <?= csrf_field(); ?>
                         <div class="mb-3">
                             <label for="kode_kelurahan">Kode Kelurahan</label>
@@ -96,6 +96,19 @@
                                 <?php if (isset($validation) && $validation->getError('kode_kelurahan')) : ?>
                                     <?= $validation->getError('kode_kelurahan'); ?>
                                 <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating mb-3 mb-md-0">
+                                <select class="form-select" aria-label="Default select example" id="kode_kecamatan" name="kode_kecamatan">
+                                    <option value="" disabled selected>
+                                        --Pilih Kecamatan--</option>
+                                    <?php foreach ($list_kec as $o) : ?>
+                                        <option value="<?= $o->kode_kecamatan; ?>">
+                                            [<?= $o->kode_kecamatan; ?>] <?= $o->nama_kec; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <label for="kode_kecamatan">Kecamatan</label>
                             </div>
                         </div>
                         <div class="mb-3">

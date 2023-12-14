@@ -21,16 +21,16 @@ class KelurahanController extends BaseController
         $this->builder->join('kecamatan', 'kecamatan.kode_kecamatan = kelurahan.kode_kecamatan');
         // $this->builder->join('auth_groups', 'auth_groups.id = auth_groups_users.group_id');
         $this->query = $this->builder->get();
-
-        // $this->builder2 = $this->db->table('auth_groups');
-        // $this->builder2->select('id, name');
-        // $this->query2 = $this->builder2->get();
+        $this->builder2                     = $this->db->table('kecamatan');
+        $this->builder2->select('kode_kecamatan, nama_kec');
+        $this->query2                       = $this->builder2->get();
     }
     public function index()
     {
         $data = [
             'title' => 'Daftar Kelurahan',
             'data_kelurahan' => $this->query->getResult(),
+            'list_kec' => $this->query2->getResult(),
 
         ];
 

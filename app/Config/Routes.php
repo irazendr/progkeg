@@ -53,6 +53,8 @@ $routes->group('daftar-kegiatan', function ($routes) {
 $routes->group('input-progress', function ($routes) {
     $routes->get('/', 'Admin\KegiatanController::input');
     $routes->post('tambah', 'Admin\KegiatanController::progress');
+    $routes->post('getKelurahanByKecamatan', 'Admin\KegiatanController::getKelurahanByKecamatan');
+    $routes->get('daftarKecamatan', 'Admin\KegiatanController::daftarKecamatan');
     $routes->put('ubah/(:any)', 'Admin\KegiatanController::up_progress/$1');
     $routes->delete('hapus/', 'Admin\KegiatanController::destroy_progress');
     $routes->post('import', 'Admin\KegiatanController::import_progress');

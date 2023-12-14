@@ -40,4 +40,13 @@ class KelurahanModel extends Model
     // protected $afterFind      = [];
     // protected $beforeDelete   = [];
     // protected $afterDelete    = [];
+
+    public function getAllKelurahan($id_kec)
+    {
+        $query = $this->select('kode_kelurahan,kelurahan.kode_kecamatan as kode_kec,nama_kel_des')
+            ->where('kelurahan.kode_kecamatan', $id_kec)
+            ->findAll();
+
+        return $query;
+    }
 }

@@ -40,4 +40,12 @@ class KecamatanModel extends Model
     // protected $afterFind      = [];
     // protected $beforeDelete   = [];
     // protected $afterDelete    = [];
+
+    public function getAllKecamatan()
+    {
+        $query = $this->select('*')
+            ->findAll();
+
+        return $query;
+    }
 }

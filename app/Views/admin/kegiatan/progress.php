@@ -159,7 +159,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-floating mb-3 mb-md-0">
-                                <select class="form-select" aria-label="Default select example" id="id_kec" name="id_kec">
+                                <select class="form-select" aria-label="Default select example" id="id_kec_tambah" name="id_kec">
                                     <option value="" disabled selected>
                                         --Pilih Kecamatan--</option>
                                     <?php foreach ($list_kec as $o) : ?>
@@ -172,13 +172,8 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-floating mb-3 mb-md-0">
-                                <select class="form-select" aria-label="Default select example" id="id_kel" name="id_kel">
-                                    <option value="" disabled selected>
-                                        --Pilih Kelurahan/Desa--</option>
-                                    <?php foreach ($list_kel as $p) : ?>
-                                        <option value="<?= $p->kode_kelurahan; ?>">
-                                            [<?= $p->kode_kelurahan; ?>] <?= $p->nama_kel_des; ?></option>
-                                    <?php endforeach; ?>
+                                <select class="form-select" aria-label="Default select example" id="id_kel_tambah" name="id_kel">
+
                                 </select>
                                 <label for="role">Kelurahan</label>
                             </div>
@@ -400,4 +395,68 @@
             })
         }
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#id_kec_tambah').change(function() {
+                var id_kec = $(this).val();
+
+                // Perbarui dropdown "Kelurahan" dengan data dari server
+                $.ajax({
+                    type: "POST",
+                    url: "/input-progress/getKelurahanByKecamatan",
+                    data: {
+                        id_kec: id_kec
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        var options =
+                            '<option value="" disabled selected>--Pilih Kelurahan/Desa--</option>';
+
+                        $.each(response.kelurahan, function(key, value) {
+                            options += '<option value="' + value.kode_kelurahan +
+                                '">[' + value.kode_kelurahan + '] ' +
+                                value.nama_kel_des + '</option>';
+                        });
+
+                        // Perbarui dropdown "Kelurahan"
+                        $('#id_kel_tambah').html(options);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#id_kec_tambah').change(function() {
+                var id_kec = $(this).val();
+
+                // Perbarui dropdown "Kelurahan" dengan data dari server
+                $.ajax({
+                    type: "POST",
+                    url: "/input-progress/getKelurahanByKecamatan",
+                    data: {
+                        id_kec: id_kec
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        var options =
+                            '<option value="" disabled selected>--Pilih Kelurahan/Desa--</option>';
+
+                        $.each(response.kelurahan, function(key, value) {
+                            options += '<option value="' + value.kode_kelurahan +
+                                '">[' + value.kode_kelurahan + '] ' +
+                                value.nama_kel_des + '</option>';
+                        });
+
+                        // Perbarui dropdown "Kelurahan"
+                        $('#id_kel_tambah').html(options);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
     <?= $this->endSection(); ?>
